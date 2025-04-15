@@ -1,4 +1,4 @@
 *.html
 *.class
-$GIT_DIR/.git
-$GIT_DIR/JavaDoc/
+.git/
+JavaDoc/*
