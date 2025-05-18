@@ -10,3 +10,45 @@ Equipo David , Hector , Denys , Claudia
 ---
 
 ## 📁 Estructura del Repositorio
+
+
+
+---
+
+## 🧠 Sobre el Proyecto
+
+Este repositorio contiene tanto **una página web moderna** como un **programa funcional** creado para [💡 propósito del proyecto].
+
+- 🌐 **Web**: Interfaz intuitiva y responsiva.
+- 🧩 **Programa**: Funcionalidades automatizadas que interactúan con la web o sistema externo.
+- 🎨 Estilo personalizado para una experiencia atractiva.
+
+---
+
+## 🚀 Tecnologías Utilizadas
+
+### 🔧 Backend / Programa
+- Java
+- SQL 
+
+### 🌐 Frontend / Web
+- HTML5 / CSS3 / JavaScript 
+- Framework: Boostrap
+
+---
+
+## 🌈 Vista Previa
+
+| Página Web | Programa en acción |
+|------------|--------------------|
+| ![web](https://via.placeholder.com/300x180?text=Vista+Web) | ![programa](https://via.placeholder.com/300x180?text=Vista+Programa) |
+
+---
+
+## ⚙️ Cómo Ejecutar
+
+### 🖥️ Ejecutar el Programa
+
+```bash
+cd programa
+java index.java
