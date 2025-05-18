@@ -41,7 +41,7 @@ Este repositorio contiene tanto **una página web moderna** como un **programa f
 
 | Página Web | Programa en acción |
 |------------|--------------------|
-| ![web](https://via.placeholder.com/300x180?text=Vista+Web) | ![programa](https://via.placeholder.com/300x180?text=Vista+Programa) |
+|  |  |
 
 ---
 
