@@ -54,7 +54,7 @@ Este repositorio contiene tanto **una página web moderna** como un **programa f
 
 ### 🖥️ Ejecutar el Programa
 
-```bash
+```java
 javac -nowarn ./ByteScore/Main.java
 java ByteScore/Main
 ```
