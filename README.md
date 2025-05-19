@@ -39,9 +39,9 @@ Este repositorio contiene tanto **una página web moderna** como un **programa f
 
 ## 🌈 Vista Previa
 
-| Página Web | Programa en acción |
-|------------|--------------------|
-|  |  |
+| Página Web | 
+|------------|
+|  |  
 
 ---
 
