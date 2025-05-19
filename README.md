@@ -1,7 +1,7 @@
 # Proyecto_Inter
 Equipo David , Hector , Denys , Claudia
 
-<img src="./Logo/WhatsApp Image 2025-05-19 at 12.47.28.jpeg" alt="Description" width="500" height="300">
+<img src="./Logo/WhatsApp Image 2025-05-19 at 12.47.28.jpeg" alt="Description" width="500" height="500">
 
 ## 📚 Tabla de Contenidos
 
