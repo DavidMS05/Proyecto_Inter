@@ -38,10 +38,6 @@ Este repositorio contiene tanto **una página web moderna** como un **programa f
 | [Visitar página web](https://www.youtube.com/)| 
 
 ---
-| Página Web | 
-|------------|
-| <iframe src="https://www.youtube.com/" width="600" height="400"></iframe> | 
----
 
 ## ⚙️ Cómo Ejecutar
 
