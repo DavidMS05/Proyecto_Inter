@@ -24,7 +24,7 @@ Equipo David , Hector , Denys , Claudia
 
 ## 🧠 Sobre el Proyecto
 
-Este repositorio contiene tanto **una página web moderna** como un **programa funcional** creado para [💡 Crear una experiencia atractiva para los jugadores apasionados].
+Este repositorio contiene tanto **una página web moderna** como un **programa funcional** realizado para **💡 Crear una experiencia atractiva para los jugadores apasionados**.
 
 - 🌐 **Web**: Interfaz intuitiva y responsiva.
 - 🧩 **Programa**: Funcionalidades automatizadas que interactúan con la web o sistema externo.
