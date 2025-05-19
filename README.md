@@ -61,3 +61,6 @@ javac -nowarn ./ByteScore/Main.java
 java ByteScore/Main
 ```
 o ejecutar *Encender Aplicacion.bat*
+
+[!WARNING]  
+Atención: El código está en desarrollo, puede haber fallos inesperados.
