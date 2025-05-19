@@ -1,8 +1,7 @@
 # Proyecto_Inter
 Equipo David , Hector , Denys , Claudia
 
-img("./Logo/WhatsApp%20Image%202025-05-19%20at%2012.47.28.jpeg")
-![Texto alternativo](./Logo/WhatsApp%20Image%202025-05-19%20at%2012.47.28.jpeg )
+<img src="./Logo/WhatsApp Image 2025-05-19 at 12.47.28.jpeg" alt="Description" width="500" height="300">
 
 ## 📚 Tabla de Contenidos
 
