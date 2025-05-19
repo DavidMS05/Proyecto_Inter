@@ -1,6 +1,17 @@
 # Proyecto_Inter
 Equipo David , Hector , Denys , Claudia
 
+## 📚 Tabla de Contenidos
+
+- [🧠 Sobre el Proyecto](#-sobre-el-proyecto)
+- [🚀 Tecnologías Utilizadas](#-tecnologías-utilizadas)
+  - [🔧 Backend / Programa](#-backend--programa)
+  - [🌐 Frontend / Web](#-frontend--web)
+- [🌈 Vista Previa](#-vista-previa)
+- [⚙️ Cómo Ejecutar](#️-cómo-ejecutar)
+- [🖥️ Ejecutar el Programa](#️-ejecutar-el-programa)
+
+
 <h1 align="center">🌐 Proyecto Web + 🛠️ Programa</h1>
 
 <p align="center">
