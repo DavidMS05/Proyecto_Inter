@@ -35,7 +35,7 @@ Este repositorio contiene tanto **una página web moderna** como un **programa f
 
 | Página Web | 
 |------------|
-| [Visitar página web](https://www.ejemplo.com)|  
+| [Visitar página web](https://www.youtube.com/)|  
 
 ---
 
