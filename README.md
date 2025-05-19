@@ -9,15 +9,9 @@ Equipo David , Hector , Denys , Claudia
 
 ---
 
-## 📁 Estructura del Repositorio
-
-
-
----
-
 ## 🧠 Sobre el Proyecto
 
-Este repositorio contiene tanto **una página web moderna** como un **programa funcional** creado para [💡 propósito del proyecto].
+Este repositorio contiene tanto **una página web moderna** como un **programa funcional** creado para [💡 Crear una experiencia atractiva para los jugadores apasionados].
 
 - 🌐 **Web**: Interfaz intuitiva y responsiva.
 - 🧩 **Programa**: Funcionalidades automatizadas que interactúan con la web o sistema externo.
