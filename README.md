@@ -55,5 +55,7 @@ Este repositorio contiene tanto **una página web moderna** como un **programa f
 ### 🖥️ Ejecutar el Programa
 
 ```bash
-cd programa
-java index.java
+javac -nowarn ./ByteScore/Main.java
+java ByteScore/Main
+```
+o ejecutar *Encender Aplicacion.bat*
