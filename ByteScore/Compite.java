@@ -21,4 +21,9 @@ public interface Compite {
      * @see Jugador
      */
     public boolean comparar(String comp, String nom);
+    public String htmlHeader(String nomCompeticion);
+    public String htmlContent();
+    public Competicion getCompeticion();
+    public String letra();
+    public String escribirCSV();
 }
