@@ -20,7 +20,7 @@ public class Conexion_DB {
         Connection con = null; // instacia una conexión
         try {
             Class.forName("com.mysql.cj.jdbc.Driver"); // Cargar el driver
-            String urlOdbc = "jdbc:mysql://localhost:3306/esports_completa";
+            String urlOdbc = "jdbc:mysql://localhost:3306/bytescore";
             con = (java.sql.DriverManager.getConnection(urlOdbc, "root", "2309D2309d")); // crea conexión
             return con;
         } catch (Exception e) {// SQLException y ClassNotFoundException

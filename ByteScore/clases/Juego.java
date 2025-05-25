@@ -7,6 +7,7 @@ package clases;
  */
 public class Juego {
     private String nombre;
+    private int cod;
 
     /**
      * Constructor por defecto.
@@ -25,5 +26,21 @@ public class Juego {
     @Override
     public String toString() {
         return this.nombre;
+    }
+
+    public int getCod() {
+        return cod;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setCod(int cod) {
+        this.cod = cod;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 }

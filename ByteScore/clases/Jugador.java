@@ -1,5 +1,7 @@
 package clases;
 
+import java.sql.Date;
+
 /**
  * Clase que representa un jugador o usuario del sistema.
  * @author David
@@ -8,17 +10,19 @@ package clases;
 public class Jugador {
     private String dni;
     private String nombre;
-    private String fechaNacimiento;
+    private Date fechaNacimiento;
+    private String email;
     private String password;
-    private Forma forma;
     
+    public Jugador() {}
+
     /**
      * Constructor por defecto.
      * @param dni dni del jugador
      */
     public Jugador(String dni) {
         this.dni = dni;
-        this.nombre = this.fechaNacimiento = this.password = "";
+        //this.nombre = this.fechaNacimiento = this.password = "";
         // this.forma = new Forma(capitan, titular);
     }
     /**
@@ -30,12 +34,12 @@ public class Jugador {
      * @param capitan si es capitan
      * @param titular si juega
      */
-    public Jugador(String nombre, String dni, String fechaNacimiento, String password, boolean capitan, boolean titular) {
+    public Jugador(String nombre, String dni, String fechaNacimiento, String email, String password) {//, boolean capitan, boolean titular) {
         this.nombre = nombre;
         this.dni = dni;
-        this.fechaNacimiento = fechaNacimiento;
+        //this.fechaNacimiento = fechaNacimiento;
+        this.email = email;
         this.password = password;
-        this.forma = new Forma(capitan, titular);
     }
 
     /**
@@ -43,8 +47,8 @@ public class Jugador {
      * @since 1.0
      */
     public void mostrarInfo() {
-        System.out.println("Jugador: " + nombre + " | DNI: " + dni + " | Nacimiento: " + fechaNacimiento +
-                " | Capitan: " + forma.getCapitan() + " | Titular: " + forma.getTitular());
+        System.out.println("Jugador: " + nombre + " | DNI: " + dni + " | Nacimiento: " + fechaNacimiento);// +
+                //" | Capitan: " + forma.getCapitan() + " | Titular: " + forma.getTitular());
     }
     /**
      * Getter de nombre de jugador.
@@ -64,7 +68,11 @@ public class Jugador {
      * Getter de fecha de nacimiento.
      * @return fecha
      */
+    /*
     public String getFechaNacimiento() {
+        return fechaNacimiento;
+    }*/
+    public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
     /**
@@ -79,7 +87,36 @@ public class Jugador {
      * @return Forma
      * @see Forma
      */
+    /*
     public Forma getForma() {
         return forma;
+    }*/
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+/*
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }*/
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

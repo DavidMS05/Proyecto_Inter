@@ -1,25 +1,27 @@
 package db;
 
 import clases.Compite_E;
+import clases.Eliminatoria;
+import clases.Equipo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
-import java.util.List;
-import java.util.ArrayList;
 
 public class Compite_E_DB {
     public void actualiza(Connection con, Compite_E compite_e) throws Exception {
         PreparedStatement stmt = null;
         try {
-            stmt = con.prepareStatement("update compite_e set nombre = ?");
-            stmt.setString(1, "");
+            stmt = con.prepareStatement("update compite_e set ronda = ? where nom_comp like ? and id_equipo = ?");
+            stmt.setInt(1, compite_e.getNumRonda());
+            stmt.setString(2, compite_e.getCompeticion().getNombre());
+            stmt.setInt(3, compite_e.getEquipo().getCod());
             
             stmt.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
-            throw new Exception("Ha habido un problema al actualizar compite_e " + ex.getMessage());
+            throw new Exception("Ha habido un problema al actualizar compite_e: " + ex.getMessage());
         } finally {
             if (stmt != null)
                 stmt.close();
@@ -29,12 +31,14 @@ public class Compite_E_DB {
     public void elimina(Connection con, Compite_E compite_e) throws Exception {
         PreparedStatement stmt = null;
         try {
-            stmt = con.prepareStatement("delete from compite_e where dni = ?");
-            stmt.setInt(1, 0);
+            stmt = con.prepareStatement("delete from compite_e where nom_comp like ? and id_equipo = ?");
+            stmt.setString(1, compite_e.getCompeticion().getNombre());
+            stmt.setInt(1, compite_e.getEquipo().getCod());
+            
             stmt.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
-            throw new Exception("Ha habido un problema al eliminar compite_e " + ex.getMessage());
+            throw new Exception("Ha habido un problema al eliminar compite_e: " + ex.getMessage());
         } finally {
             if (stmt != null)
                 stmt.close();
@@ -45,132 +49,56 @@ public class Compite_E_DB {
         PreparedStatement stmt = null;
         try {
             stmt = con.prepareStatement("insert into compite_e" +
-                    "(dni, nombre, ape1, ape2, nick, passwd, saldo, moroso) " +
-                    "values (?,?,?,?,?,?,?,?)");
-            stmt.setInt(1, 0);
+                    "(nom_comp,id_equipo,ronda) " +
+                    "values (?,?,?)");
+            stmt.setString(1, compite_e.getCompeticion().getNombre());
+            stmt.setInt(2, compite_e.getEquipo().getCod());
+            stmt.setInt(3, compite_e.getNumRonda());
             
             stmt.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
-            throw new Exception("Ha habido un problema al insertar compite_e " + ex.getMessage());
+            throw new Exception("Ha habido un problema al insertar compite_e: " + ex.getMessage());
         } finally {
             if (stmt != null)
                 stmt.close();
         }
     }
     
-    private void obtenClienteFila(ResultSet rs, Compite_E compite_e) throws SQLException {
-        
+    private void obtenCompiteFila(Connection con, ResultSet rs, Compite_E compite_e) throws Exception {
+        Eliminatoria eli = new Eliminatoria();
+        Equipo eq = new Equipo();
+        eli.setNombre(rs.getString("nom_comp"));
+        eq.setCod(rs.getInt("id_equipo"));
+        compite_e.setCompeticion(
+            (Eliminatoria) new Competicion_DB().findByNom(con, eli, new Eliminatoria()));
+        compite_e.setEquipo(new Equipo_DB().findById(con, eq));
+        compite_e.setNumRonda(rs.getInt("ronda"));
     }
     
-    public Compite_E findByDni(Connection con, Compite_E compite_e) throws Exception {
-        Compite_E _cliente = null;
+    public Compite_E findByNomId(Connection con, String nom_comp, int id_equipo) throws Exception {
+        Compite_E _compite = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            stmt = con.prepareStatement("select * from compite_e where dni = ?");
-            stmt.setInt(1, 0);
-            rs = stmt.executeQuery();
-            while (rs.next()) {
-                _cliente = new Compite_E();
-                obtenClienteFila(rs, _cliente);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new Exception("Ha habido un problema al buscar el compite_e por DNI " + ex.getMessage());
-        } finally {
-            if (rs != null)
-                rs.close();
-            if (stmt != null)
-                stmt.close();
-        }
-        return _cliente;
-    }
-    
-    public Compite_E findByNick(Connection con, Compite_E compite_e) throws Exception {
-        Compite_E _cliente = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        try {
-            stmt = con.prepareStatement("select * from compite_e where nick = ?");
-            stmt.setString(1, "");
-            rs = stmt.executeQuery();
-            while (rs.next()) {
-                _cliente = new Compite_E();
-                obtenClienteFila(rs, _cliente);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new Exception("Ha habido un problema al buscar el compite_e por nick " + ex.getMessage());
-        } finally {
-            if (rs != null)
-                rs.close();
-            if (stmt != null)
-                stmt.close();
-        }
-        return _cliente;
-    }
-    
-    public List<Compite_E> findByNumberDNIStart(Connection con, int numero) throws Exception {
-        List<Compite_E> _listaClientes = new ArrayList();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        try {
-            stmt = con.prepareStatement("select * from compite_e where dni like ?");
-            stmt.setString(1, numero+"%");
-            rs = stmt.executeQuery();
-            Compite_E _cliente = null;
-            while (rs.next()) {
-                _cliente = new Compite_E();
-                obtenClienteFila(rs, _cliente);
-                _listaClientes.add(_cliente);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new Exception("Ha habido un problema al buscar el compite_e por dni start " +
-                    ex.getMessage());
-        } finally {
-            if (rs != null)
-                rs.close();
-            if (stmt != null)
-                stmt.close();
-        }
-        return _listaClientes;
-    }
-    
-    public Compite_E findByMayorGasto(Connection con) throws Exception {
-        Compite_E _cliente = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        try {
-            stmt = con.prepareStatement("select cliente_dni as dni, (sum(precio*numero)) as gasto " +
-                    "from articulo_factura af, articulo a, factura f " +
-                    "where af.articulo_idarticulo=a.idarticulo " +
-                    "and af.factura_idfactura=f.idfactura " +
-                    "group by 1");
+            stmt = con.prepareStatement("select * from compite_e where nom_comp like ? and id_equipo = ?");
+            stmt.setString(1, nom_comp);
+            stmt.setInt(2, id_equipo);
             
             rs = stmt.executeQuery();
-            float _gastoAnterior = 0;
             while (rs.next()) {
-                float gasto = rs.getFloat("gasto");
-                if (gasto>_gastoAnterior) {
-                    _cliente = new Compite_E();
-                    //_cliente.setDni(rs.getInt("dni"));
-                    _gastoAnterior = gasto;
-                }
+                _compite = new Compite_E();
+                obtenCompiteFila(con, rs, _compite);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-            throw new Exception("Ha habido un problema al buscar el compite_e por mayor gasto " +
-                    ex.getMessage());
+            throw new Exception("Ha habido un problema al buscar el compite_e por nom e id: " + ex.getMessage());
         } finally {
             if (rs != null)
                 rs.close();
             if (stmt != null)
                 stmt.close();
         }
-        if (_cliente != null)
-            _cliente = findByDni(con, _cliente);
-        return _cliente;
+        return _compite;
     }
 }

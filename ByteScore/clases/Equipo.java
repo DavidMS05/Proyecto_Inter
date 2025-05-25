@@ -11,6 +11,7 @@ import java.util.*;
 public class Equipo {
     private String nombre;
     private ArrayList<String> jugadores;
+    private int cod;
 
     /**
      * Constructor por defecto.
@@ -37,12 +38,24 @@ public class Equipo {
         this.jugadores = new ArrayList<>(jugadores);
     }
 
+    public int getCod() {
+        return cod;
+    }
+
+    public void setCod(int cod) {
+        this.cod = cod;
+    }
+
     /**
      * Getter de nombre.
      * @return nombre
      */
     public String getNombre() {
         return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     /**
