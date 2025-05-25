@@ -1,4 +1,4 @@
-package ByteScore;
+package clases;
 
 /**
  * Un premio para una competion.

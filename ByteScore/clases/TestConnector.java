@@ -1,8 +1,8 @@
-package ByteScore;
+package clases;
 
 import java.sql.Connection;
 
-import ByteScore.db.Conexion_DB;
+import db.Conexion_DB;
 
 public class TestConnector {
     public static void main(String[] args) throws Exception {

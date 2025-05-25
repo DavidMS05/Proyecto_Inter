@@ -1,4 +1,4 @@
-package ByteScore;
+package clases;
 
 import java.util.Calendar;
 import java.util.Date;

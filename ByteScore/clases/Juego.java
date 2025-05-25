@@ -1,4 +1,4 @@
-package ByteScore;
+package clases;
 
 /**
  * Clase que representa un juego. No tiene gran funcionalidad.

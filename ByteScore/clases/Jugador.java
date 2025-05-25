@@ -1,4 +1,4 @@
-package ByteScore;
+package clases;
 
 /**
  * Clase que representa un jugador o usuario del sistema.

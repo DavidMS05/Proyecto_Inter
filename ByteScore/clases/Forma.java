@@ -1,4 +1,4 @@
-package ByteScore;
+package clases;
 
 /**
  * Clase que representa el estado de un jugador dentro de un equipo.

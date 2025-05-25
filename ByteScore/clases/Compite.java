@@ -1,4 +1,4 @@
-package ByteScore;
+package clases;
 
 /**
  * Una interfaz pequeña para poder usar parametrizados con Compite_E, Compite_L y Compite_I.

@@ -1,4 +1,4 @@
-package ByteScore;
+package clases;
 
 /**
  * Resultado de un jugador de una competicion individual.
