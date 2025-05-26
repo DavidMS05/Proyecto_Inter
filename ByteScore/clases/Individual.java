@@ -75,4 +75,9 @@ public class Individual extends Competicion {
         }
         return aux;
     }
+
+    @Override
+    public String getTipo() {
+        return "Individual";
+    }
 }

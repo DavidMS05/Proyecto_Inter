@@ -82,7 +82,7 @@ public class Jugador_DB {
         ResultSet rs = null;
         try {
             stmt = con.prepareStatement("select * from jugador where dni like ?");
-            stmt.setString(1, jugador.getNombre());
+            stmt.setString(1, jugador.getDni());
             
             rs = stmt.executeQuery();
             while (rs.next()) {
@@ -109,11 +109,11 @@ public class Jugador_DB {
             stmt = con.prepareStatement("select * from jugador");
 
             rs = stmt.executeQuery();
-            Jugador _liga = null;
+            Jugador _jugador = null;
             while (rs.next()) {
-                _liga = new Jugador();
-                obtenJugadorFila(rs, _liga);
-                _listaJugadores.add(_liga);
+                _jugador = new Jugador();
+                obtenJugadorFila(rs, _jugador);
+                _listaJugadores.add(_jugador);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();

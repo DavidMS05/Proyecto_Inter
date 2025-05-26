@@ -75,4 +75,8 @@ public class Eliminatoria extends Competicion {
         }
         return aux;
     }
+    @Override
+    public String getTipo() {
+        return "Eliminatoria";
+    }
 }

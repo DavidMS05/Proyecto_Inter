@@ -7,6 +7,8 @@ import clases.Jugador;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.ResultSet;
 
 public class Compite_I_DB {
@@ -33,7 +35,7 @@ public class Compite_I_DB {
         try {
             stmt = con.prepareStatement("delete from compite_i where nom_comp like ? and dni like ?");
             stmt.setString(1, compite_i.getCompeticion().getNombre());
-            stmt.setString(1, compite_i.getJugador().getDni());
+            stmt.setString(2, compite_i.getJugador().getDni());
             
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -100,5 +102,32 @@ public class Compite_I_DB {
                 stmt.close();
         }
         return _compite;
+    }
+
+    public List<Compite_I> cargarCompite(Connection con) throws Exception {
+        List<Compite_I> _listaComp = new ArrayList<Compite_I>();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = con.prepareStatement("select * from compite_i");
+
+            rs = stmt.executeQuery();
+            Compite_I _comp = null;
+            while (rs.next()) {
+                _comp = new Compite_I();
+                obtenCompiteFila(con, rs, _comp);
+                _listaComp.add(_comp);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new Exception("Ha habido un problema al cargar compite_i: " +
+                    ex.getMessage());
+        } finally {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+        return _listaComp;
     }
 }

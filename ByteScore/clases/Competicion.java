@@ -155,10 +155,13 @@ public abstract class Competicion {
         this.premio = premio;
     }
 
+    public abstract String getTipo();
+
     // Metodos
     @Override
     public String toString() {
         return "\nCompeticion: " + nombre + 
+        "\n - Tipo: " + getTipo() +
         "\n - Fecha: " + fRealizacion + 
         "\n - Juego: " + juego + 
         "\n - Premio: " + premio;

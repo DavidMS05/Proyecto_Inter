@@ -48,6 +48,8 @@ public class Jugadores {
                     String dni = scanner.nextLine();
                     System.out.print("Fecha de nacimiento (DD/MM/AAAA): ");
                     String fechaNacimiento = scanner.nextLine();
+                    System.out.print("Email: ");
+                    String email = scanner.nextLine();
                     System.out.print("Contraseña: ");
                     String password = scanner.nextLine();
                     /*
@@ -56,9 +58,8 @@ public class Jugadores {
                     System.out.print("¿Es titular? (true/false): ");
                     boolean titular = scanner.nextBoolean();
                     */
-                    scanner.nextLine();
                     
-                    jugadores.add(new Jugador(nombre, dni, fechaNacimiento, password));//, capitan, titular));
+                    jugadores.add(new Jugador(nombre, dni, fechaNacimiento, email, password));//, capitan, titular));
                     System.out.println("Jugador agregado correctamente.");
                     modJ = true;
                     break;
@@ -126,7 +127,7 @@ public class Jugadores {
 
                 while ((cadena = br.readLine()) != null) {
                     String strings[] = cadena.split(","), dni = strings[0], nombre = strings[1], f = strings[2], pwd = strings[3];//, b1 = strings[4], b2 = strings[5];
-                    jugadores.add(new Jugador(nombre, dni, f, pwd));//, b1.equals("true"), b2.equals("true")));
+                    jugadores.add(new Jugador(nombre, dni, f, "", pwd));//, b1.equals("true"), b2.equals("true")));
                 }
                 if (fr != null)
                     fr.close();

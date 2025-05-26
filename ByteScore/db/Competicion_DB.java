@@ -119,15 +119,15 @@ public class Competicion_DB {
                     res = 2;
                 }
                 if (res == 0) {
-                stmt.close();
-                stmt = con.prepareStatement("select * from individual where nom_comp like ?");
-                stmt.setString(1, nombre);
+                    stmt.close();
+                    stmt = con.prepareStatement("select * from individual where nom_comp like ?");
+                    stmt.setString(1, nombre);
 
-                rs = stmt.executeQuery();
-                while (rs.next()) {
-                    res = 3;
+                    rs = stmt.executeQuery();
+                    while (rs.next()) {
+                        res = 3;
+                    }
                 }
-            }
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -157,6 +157,44 @@ public class Competicion_DB {
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new Exception("Ha habido un problema al cargar ligas: " +
+                    ex.getMessage());
+        } finally {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+        return _listaLigas;
+    }
+
+    public List<Competicion> cargarTodos(Connection con) throws Exception {
+        List<Competicion> _listaLigas = new ArrayList<Competicion>();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = con.prepareStatement("select * from competicion");
+            rs = stmt.executeQuery();
+            Competicion _comp = null;
+            List<String> e = new Eliminatoria_DB().cargarNombres(con);
+            List<String> l = new Liga_DB().cargarNombres(con);
+            List<String> i = new Individual_DB().cargarNombres(con);
+            while (rs.next()) {
+                String s = rs.getString("nom_comp");
+                if (e.contains(s)) {
+                    _comp = new Eliminatoria();
+                } else if (l.contains(s)) {
+                    _comp = new Liga();
+                } else if (i.contains(s)) {
+                    _comp = new Individual();
+                } else {
+                    throw new Exception("Competicion no registrada en ningun tipo");
+                }
+                obtenCompeticionFila(rs, _comp);
+                _listaLigas.add(_comp);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new Exception("Ha habido un problema al cargar competiciones: " +
                     ex.getMessage());
         } finally {
             if (rs != null)

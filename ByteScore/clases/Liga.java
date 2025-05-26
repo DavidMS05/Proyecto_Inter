@@ -76,4 +76,9 @@ public class Liga extends Competicion {
         }
         return aux;
     }
+
+    @Override
+    public String getTipo() {
+        return "Liga";
+    }
 }
