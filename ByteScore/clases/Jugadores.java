@@ -1,4 +1,4 @@
-package ByteScore;
+package clases;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -48,15 +48,18 @@ public class Jugadores {
                     String dni = scanner.nextLine();
                     System.out.print("Fecha de nacimiento (DD/MM/AAAA): ");
                     String fechaNacimiento = scanner.nextLine();
+                    System.out.print("Email: ");
+                    String email = scanner.nextLine();
                     System.out.print("Contraseña: ");
                     String password = scanner.nextLine();
+                    /*
                     System.out.print("¿Es capitan? (true/false): ");
                     boolean capitan = scanner.nextBoolean();
                     System.out.print("¿Es titular? (true/false): ");
                     boolean titular = scanner.nextBoolean();
-                    scanner.nextLine();
+                    */
                     
-                    jugadores.add(new Jugador(nombre, dni, fechaNacimiento, password, capitan, titular));
+                    jugadores.add(new Jugador(nombre, dni, fechaNacimiento, email, password));//, capitan, titular));
                     System.out.println("Jugador agregado correctamente.");
                     modJ = true;
                     break;
@@ -123,8 +126,8 @@ public class Jugadores {
                 String cadena;
 
                 while ((cadena = br.readLine()) != null) {
-                    String strings[] = cadena.split(","), dni = strings[0], nombre = strings[1], f = strings[2], pwd = strings[3], b1 = strings[4], b2 = strings[5];
-                    jugadores.add(new Jugador(nombre, dni, f, pwd, b1.equals("true"), b2.equals("true")));
+                    String strings[] = cadena.split(","), dni = strings[0], nombre = strings[1], f = strings[2], pwd = strings[3];//, b1 = strings[4], b2 = strings[5];
+                    jugadores.add(new Jugador(nombre, dni, f, "", pwd));//, b1.equals("true"), b2.equals("true")));
                 }
                 if (fr != null)
                     fr.close();
@@ -146,8 +149,8 @@ public class Jugadores {
             File fs = new File("./ByteScore/datos/jugadores.csv");
             FileWriter fw = new FileWriter(fs);
             for (Jugador j : jugadores) {
-                String s = j.getDni() + "," + j.getNombre() + "," + j.getFechaNacimiento() + "," + j.getPassword() +
-                            "," + j.getForma().getCapitan() + "," + j.getForma().getTitular();
+                String s = j.getDni() + "," + j.getNombre() + "," + j.getFechaNacimiento() + "," + j.getPassword();// +
+                            //"," + j.getForma().getCapitan() + "," + j.getForma().getTitular();
                 fw.write(s, 0, s.length());
                 fw.write("\r\n");
             }

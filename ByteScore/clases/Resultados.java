@@ -1,11 +1,10 @@
-package ByteScore;
+package clases;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Date;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
@@ -15,7 +14,7 @@ import java.util.Scanner;
  * competiciones.
  * 
  * @author Denys (3D)
- * @version 1.2
+ * @version 1.1
  * @see Competicion
  * @see Equipo
  * @see Jugador
@@ -23,6 +22,7 @@ import java.util.Scanner;
 public class Resultados {
     /**
      * Metodo main.
+     * 
      * @param args argumentos
      */
     public static void main(String[] args) {
@@ -218,7 +218,7 @@ public class Resultados {
                             System.out.println("Nombre de la competicion: ");
                             String comp = scan.nextLine();
                             if (buscarPosCompeticion(competiciones, comp) != -1) {
-                                exportarHTMLe(ce, comp);
+                                exportarHTML(ce, comp);
                                 System.out.println(
                                         "Exportado con exito a ByteScore/salida/compite_e_" + comp + ".html\"");
                             } else
@@ -229,7 +229,7 @@ public class Resultados {
                             System.out.println("Nombre de la competicion: ");
                             String comp = scan.nextLine();
                             if (buscarPosCompeticion(competiciones, comp) != -1) {
-                                exportarHTMLl(cl, comp);
+                                exportarHTML(cl, comp);
                                 System.out.println(
                                         "Exportado con exito a ByteScore/salida/compite_l_" + comp + ".html\"");
                             } else
@@ -240,7 +240,7 @@ public class Resultados {
                             System.out.println("Nombre de la competicion: ");
                             String comp = scan.nextLine();
                             if (buscarPosCompeticion(competiciones, comp) != -1) {
-                                exportarHTMLi(ci, comp);
+                                exportarHTML(ci, comp);
                                 System.out.println(
                                         "Exportado con exito a ByteScore/salida/compite_i_" + comp + ".html\"");
                             } else
@@ -252,11 +252,11 @@ public class Resultados {
                 }
                 case 0 -> {
                     if (modE)
-                        escribirCompiteE(ce);
+                        escribirCompite(ce);
                     if (modL)
-                        escribirCompiteL(cl);
+                        escribirCompite(cl);
                     if (modI)
-                        escribirCompiteI(ci);
+                        escribirCompite(ci);
                 }
                 default -> System.out.println("Opcion invalida.");
             }
@@ -538,27 +538,24 @@ public class Resultados {
     }
 
     /**
-     * Metodo que exporta los resultados de cierta competicion eliminatoria a una
+     * Metodo universal que exporta los resultados de una competicion cualquiera a
+     * una
      * tabla <code>html</code>.
      * 
-     * @param competiciones  ArrayList de <b>Compite_E</b>
+     * @param competiciones  ArrayList de <b>clase que implementa Compite</b>
      * @param nomCompeticion nombre de la competicion
-     * @since 1.0a
-     * @see Compite_E
-     * @see Eliminatoria
+     * @since 1.1
+     * @see Compite
      */
-    public static void exportarHTMLe(ArrayList<Compite_E> competiciones, String nomCompeticion) {
+    public static <T extends Compite> void exportarHTML(ArrayList<T> competiciones, String nomCompeticion) {
         try {
-            File fs = new File("./ByteScore/salida/compite_e_" + nomCompeticion.replaceAll(" ", "-") + ".html");
+            File fs = new File("./ByteScore/salida/compite_" + competiciones.get(0).letra() +
+                    "_" + nomCompeticion.replaceAll(" ", "-") + ".html");
             FileWriter fw = new FileWriter(fs);
-            String s = "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"UTF-8\">" +
-                    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" +
-                    "<title>Resultados</title><style>table,td,th {border: 1px solid black;}</style>" +
-                    "</head><body><h1>Competicion Eliminatoria: " + nomCompeticion + "</h1>" +
-                    "<table><tr><th>Equipo</th><th>Ronda</th></tr>";
-            for (Compite_E c : competiciones)
+            String s = competiciones.get(0).htmlHeader(nomCompeticion);
+            for (T c : competiciones)
                 if (nomCompeticion.equals(c.getCompeticion().getNombre()))
-                    s += "<tr><td>" + c.getEquipo().getNombre() + "</td><td>" + c.getNumRonda() + "</td></tr>";
+                    s += c.htmlContent();
             s += "</table></body></html>";
             fw.write(s, 0, s.length());
             fw.write("\r\n");
@@ -571,138 +568,18 @@ public class Resultados {
     }
 
     /**
-     * Metodo que exporta los resultados de cierta competicion tipo liga a una tabla
-     * <code>html</code>.
+     * Escribe los datos de un ArrayList de cualquier subtipo de <b>Compite</b> a un archivo <code>csv</code>.
      * 
-     * @param competiciones  ArrayList de <b>Compite_L</b>
-     * @param nomCompeticion nombre de la competicion
-     * @since 1.0a
-     * @see Compite_L
-     * @see Liga
+     * @param al ArrayList de <b>subtipo de Compite</b>
+     * @since 1.1
+     * @see Compite
      */
-    public static void exportarHTMLl(ArrayList<Compite_L> competiciones, String nomCompeticion) {
+    public static <T extends Compite> void escribirCompite(ArrayList<T> al) {
         try {
-            File fs = new File("./ByteScore/salida/compite_l_" + nomCompeticion.replaceAll(" ", "-") + ".html");
+            File fs = new File("./ByteScore/datos/compite_" + al.get(0).letra() + ".csv");
             FileWriter fw = new FileWriter(fs);
-            String s = "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"UTF-8\">" +
-                    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" +
-                    "<title>Resultados</title><style>table,td,th {border: 1px solid black;}</style>" +
-                    "</head><body><h1>Competicion de Liga: " + nomCompeticion + "</h1>" +
-                    "<table><tr><th>Equipo</th><th>Posicion</th></tr>";
-            for (Compite_L c : competiciones)
-                if (nomCompeticion.equals(c.getCompeticion().getNombre()))
-                    s += "<tr><td>" + c.getEquipo().getNombre() + "</td><td>" + c.getPosicion() + "</td></tr>";
-            s += "</table></body></html>";
-            fw.write(s, 0, s.length());
-            fw.write("\r\n");
-            if (fw != null)
-                fw.close();
-        } catch (IOException e) {
-            System.err.println("ERROR");
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Metodo que exporta los resultados de cierta competicion individual a una
-     * tabla <code>html</code>.
-     * 
-     * @param competiciones  ArrayList de <b>Compite_I</b>
-     * @param nomCompeticion nombre de la competicion
-     * @since 1.0a
-     * @see Compite_I
-     * @see Individual
-     */
-    public static void exportarHTMLi(ArrayList<Compite_I> competiciones, String nomCompeticion) {
-        try {
-            File fs = new File("./ByteScore/salida/compite_i_" + nomCompeticion.replaceAll(" ", "-") + ".html");
-            FileWriter fw = new FileWriter(fs);
-            String s = "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"UTF-8\">" +
-                    "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">" +
-                    "<title>Resultados</title><style>table,td,th {border: 1px solid black;}</style></head>" +
-                    "<body><h1>Competicion Individual: " + nomCompeticion + "</h1>" +
-                    "<table><tr><th>Jugador</th><th>Ronda</th></tr>";
-            for (Compite_I c : competiciones)
-                if (nomCompeticion.equals(c.getCompeticion().getNombre()))
-                    s += "<tr><td>" + c.getJugador().getNombre() + "</td><td>" + c.getNumRonda() + "</td></tr>";
-            s += "</table></body></html>";
-            fw.write(s, 0, s.length());
-            fw.write("\r\n");
-            if (fw != null)
-                fw.close();
-        } catch (IOException e) {
-            System.err.println("ERROR");
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Metodo que escribe los datos de un ArrayList a un archivo <code>csv</code>.
-     * <b>Version Compite_E</b>.
-     * 
-     * @param ae ArrayList de <b>Compite_E</b>
-     * @since 1.0b
-     * @see Compite_E
-     */
-    public static void escribirCompiteE(ArrayList<Compite_E> ae) {
-        try {
-            File fs = new File("./ByteScore/datos/compite_e.csv");
-            FileWriter fw = new FileWriter(fs);
-            for (Compite_E c : ae) {
-                String s = c.getEquipo().getNombre() + "," + c.getNumRonda() + "," + c.getCompeticion().getNombre();
-                fw.write(s, 0, s.length());
-                fw.write("\r\n");
-            }
-            if (fw != null)
-                fw.close();
-        } catch (IOException e) {
-            System.err.println("ERROR");
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Metodo que escribe los datos de un ArrayList a un archivo <code>csv</code>.
-     * <b>Version Compite_L</b>.
-     * 
-     * @param al ArrayList de <b>Compite_L</b>
-     * @since 1.0b
-     * @see Compite_L
-     */
-    public static void escribirCompiteL(ArrayList<Compite_L> al) {
-        try {
-            File fs = new File("./ByteScore/datos/compite_l.csv");
-            FileWriter fw = new FileWriter(fs);
-            for (Compite_L c : al) {
-                Date f = c.getfFin();
-                String s = c.getEquipo().getNombre() + "," + (f.getDay() + "/" + f.getMonth() + "/" + f.getYear()) + ","
-                        + c.getPosicion() + "," + c.getCompeticion().getNombre();
-                fw.write(s, 0, s.length());
-                fw.write("\r\n");
-            }
-            if (fw != null)
-                fw.close();
-        } catch (IOException e) {
-            System.err.println("ERROR");
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Metodo que escribe los datos de un ArrayList a un archivo <code>csv</code>.
-     * <b>Version Compite_I</b>.
-     * 
-     * @param ai ArrayList de <b>Compite_I</b>
-     * @since 1.0b
-     * @see Compite_I
-     */
-    public static void escribirCompiteI(ArrayList<Compite_I> ai) {
-        try {
-            File fs = new File("./ByteScore/datos/compite_i.csv");
-            FileWriter fw = new FileWriter(fs);
-            for (Compite_I c : ai) {
-                String s = c.getJugador().getNombre() + "," + c.getNumRonda() + "," + c.getCompeticion().getNombre();
-                fw.write(s, 0, s.length());
+            for (T c : al) {
+                fw.write(c.escribirCSV());
                 fw.write("\r\n");
             }
             if (fw != null)

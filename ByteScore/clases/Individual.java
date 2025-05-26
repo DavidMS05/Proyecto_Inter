@@ -1,4 +1,4 @@
-package ByteScore;
+package clases;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,5 +74,10 @@ public class Individual extends Competicion {
             aux = false;
         }
         return aux;
+    }
+
+    @Override
+    public String getTipo() {
+        return "Individual";
     }
 }

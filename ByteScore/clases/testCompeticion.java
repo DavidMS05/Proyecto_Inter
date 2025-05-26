@@ -1,4 +1,4 @@
-package ByteScore;
+package clases;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -49,15 +49,15 @@ public class testCompeticion {
                             float p_met = scan.nextFloat();
                             switch (com) {
                                 case "e" -> {
-                                    competiciones.add(new Eliminatoria(nom, new Juego(juego), new Date(),
+                                    competiciones.add(new Eliminatoria(nom, new Juego(0,juego), new Date(),
                                             new Premio(nomP, p_met), new ArrayList<Compite_E>()));
                                 }
                                 case "l" -> {
-                                    competiciones.add(new Liga(nom, new Juego(juego), new Date(),
+                                    competiciones.add(new Liga(nom, new Juego(0,juego), new Date(),
                                             new Premio(nomP, p_met), new ArrayList<Compite_L>()));
                                 }
                                 case "i" -> {
-                                    competiciones.add(new Individual(nom, new Juego(juego), new Date(),
+                                    competiciones.add(new Individual(nom, new Juego(0,juego), new Date(),
                                             new Premio(nomP, p_met), new ArrayList<Compite_I>()));
                                 }
                                 default -> {

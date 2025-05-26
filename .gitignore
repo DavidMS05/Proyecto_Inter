@@ -1,4 +1,5 @@
 *.html
 *.class
+*.bat
 .git/
 JavaDoc/*

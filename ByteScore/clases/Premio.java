@@ -1,4 +1,4 @@
-package ByteScore;
+package clases;
 
 /**
  * Un premio para una competion.
@@ -9,6 +9,7 @@ public class Premio {
     private String nombre_p;
     private float p_metalico; // No he encontrado clase Euros
     private Placa placa;
+    private Competicion competicion;
 
     // Constructores
     /**
@@ -91,6 +92,14 @@ public class Premio {
      */
     public void setPlaca(Placa placa) {
         this.placa = placa;
+    }
+
+    public Competicion getCompeticion() {
+        return competicion;
+    }
+
+    public void setCompeticion(Competicion competicion) {
+        this.competicion = competicion;
     }
 
     // Metodos
