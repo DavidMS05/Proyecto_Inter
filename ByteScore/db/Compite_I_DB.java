@@ -68,12 +68,10 @@ public class Compite_I_DB {
     }
     
     private void obtenCompiteFila(Connection con, ResultSet rs, Compite_I compite_i) throws Exception {
-        Individual indiv = new Individual();
         Jugador jug = new Jugador();
-        indiv.setNombre(rs.getString("nom_comp"));
         jug.setDni(rs.getString("dni"));
         compite_i.setCompeticion(
-            (Individual) new Competicion_DB().findByNom(con, indiv, new Individual()));
+            (Individual) new Competicion_DB().findByNom(con, rs.getString("nom_comp"), new Individual()));
         compite_i.setJugador(new Jugador_DB().findByDni(con, jug));
         compite_i.setNumRonda(rs.getInt("ronda"));
     }

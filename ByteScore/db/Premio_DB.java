@@ -84,7 +84,7 @@ public class Premio_DB {
         premio.setNombre_p(rs.getString("nombre_p"));
         premio.setP_metalico(rs.getFloat("p_metalico"));
         premio.setPlaca(new Placa_DB().findById(con, p));
-        premio.setCompeticion(new Competicion_DB().findByNom(con, c, c));
+        premio.setCompeticion(new Competicion_DB().findByNom(con, rs.getString("nom_comp"), c));
     }
     
     public Premio findByNom(Connection con, Premio premio) throws Exception {

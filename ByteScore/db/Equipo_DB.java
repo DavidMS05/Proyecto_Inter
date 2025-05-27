@@ -48,9 +48,8 @@ public class Equipo_DB {
         try {
             stmt = con.prepareStatement("insert into equipo" +
                     "(id_equipo,nombre_e) " +
-                    "values (?,?)");
-            stmt.setInt(1, equipo.getCod());
-            stmt.setString(2, equipo.getNombre());
+                    "values (null,?)");
+            stmt.setString(1, equipo.getNombre());
 
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -73,7 +72,32 @@ public class Equipo_DB {
         ResultSet rs = null;
         try {
             stmt = con.prepareStatement("select * from equipo where id_equipo = ?");
-            stmt.setString(1, equipo.getNombre());
+            stmt.setInt(1, equipo.getCod());
+
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                _equipo = new Equipo();
+                obtenEquipoFila(rs, _equipo);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new Exception("Ha habido un problema al buscar equipo por id: " + ex.getMessage());
+        } finally {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+        return _equipo;
+    }
+
+    public Equipo findByNom(Connection con, String nom) throws Exception {
+        Equipo _equipo = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = con.prepareStatement("select * from equipo where nombre_e like ?");
+            stmt.setString(1, nom);
 
             rs = stmt.executeQuery();
             while (rs.next()) {

@@ -68,12 +68,10 @@ public class Compite_E_DB {
     }
 
     private void obtenCompiteFila(Connection con, ResultSet rs, Compite_E compite_e) throws Exception {
-        Eliminatoria eli = new Eliminatoria();
         Equipo eq = new Equipo();
-        eli.setNombre(rs.getString("nom_comp"));
         eq.setCod(rs.getInt("id_equipo"));
         compite_e.setCompeticion(
-                (Eliminatoria) new Competicion_DB().findByNom(con, eli, new Eliminatoria()));
+                (Eliminatoria) new Competicion_DB().findByNom(con, rs.getString("nom_comp"), new Eliminatoria()));
         compite_e.setEquipo(new Equipo_DB().findById(con, eq));
         compite_e.setNumRonda(rs.getInt("ronda"));
     }

@@ -20,7 +20,12 @@ import db.Conexion_DB;
 import db.Eliminatoria_DB;
 import db.Equipo_DB;
 import db.Individual_DB;
+import db.Juego_DB;
 
+/**
+ * @author Denys (3D)
+ * @version 1.1
+ */
 public class TestConnector {
     public static void main(String[] args) throws Exception {
         Conexion_DB _conexion_DB = new Conexion_DB();
@@ -32,7 +37,7 @@ public class TestConnector {
             _con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             Scanner scan = new Scanner(System.in);
             // programa
-            
+
             final String MENU_INICIO = "\nMENu PRINCIPAL\n1. Jugadores\n2. Equipos\n3. Resultados\n4. Competiciones\n0. Salir\nElija un subsistema: ";
             int op = -1;
 
@@ -59,9 +64,10 @@ public class TestConnector {
                     }
                     default -> System.err.println("Opcion incorrecta, inserte un numero del menu.");
                 }
+                _con.commit();
             }
             System.out.println("Gracias por usar nuestros servicios. Buena suerte, jugadores.");
-            
+
             // fin programa
             _con.commit();
         } catch (Exception ex) {
@@ -106,8 +112,8 @@ public class TestConnector {
                     String password = scan.nextLine();
 
                     Jugador j = new Jugador(nombre, dni, fechaNacimiento, email, password);
-                    jugadores.add(j);
                     jDB.inserta(con, j);
+                    jugadores.add(jDB.findByDni(con, j));
                     System.out.println("Jugador agregado correctamente.");
                     break;
 
@@ -149,6 +155,7 @@ public class TestConnector {
                 if (equipos.isEmpty()) {
                     System.out.println("No hay equipos registrados.");
                 } else {
+                    System.out.println(equipos);
                     System.out.println("Selecciona un equipo (1, 2, 3...). Pulse 0 para volver al menu.");
                     for (int i = 0; i < equipos.size(); i++) {
                         System.out.println((i + 1) + ". " + equipos.get(i).getNombre());
@@ -162,16 +169,21 @@ public class TestConnector {
             } else if (opcion == 2) {
                 System.out.print("Elige el nombre del nuevo equipo. ");
                 String nombreEquipo = scan.nextLine();
-                ArrayList<String> jugadores = new ArrayList<>();
-                for (int i = 1; i <= 5; i++) {
-                    System.out.print("Dime el nombre del jugador " + i + ". ");
-                    jugadores.add(scan.nextLine());
+                /*
+                 * ArrayList<String> jugadores = new ArrayList<>();
+                 * for (int i = 1; i <= 5; i++) {
+                 * System.out.print("Dime el nombre del jugador " + i + ". ");
+                 * jugadores.add(scan.nextLine());
+                 * }
+                 */
+                if (eDB.findByNom(con, nombreEquipo) == null) {
+                    Equipo eq = new Equipo(nombreEquipo);
+                    eDB.inserta(con, eq);
+                    equipos.add(eDB.findByNom(con, nombreEquipo));
+                    System.out.println("Perfecto! Equipo creado exitosamente.");
+                } else {
+                    System.err.println("Ese nombre ya está ocupado.");
                 }
-                Equipo eq = new Equipo(nombreEquipo, jugadores);
-                eq.setCod(equipos.size() + 1);
-                equipos.add(eq);
-                eDB.inserta(con, eq);
-                System.out.println("Perfecto! Equipo creado exitosamente.");
             } else if (opcion == 3) {
                 if (equipos.isEmpty()) {
                     System.out.println("No hay equipos para eliminar.");
@@ -198,10 +210,11 @@ public class TestConnector {
     public static void competiciones(Connection con, Scanner scan) throws Exception {
         Competicion_DB cDB = new Competicion_DB();
         Eliminatoria_DB eDB = new Eliminatoria_DB();
+        Juego_DB jDB = new Juego_DB();
         Liga_DB lDB = new Liga_DB();
         Individual_DB iDB = new Individual_DB();
         ArrayList<Competicion> competiciones = new ArrayList<Competicion>(cDB.cargarTodos(con));
-        final String MENU = "\nMENu COMPETICIONES\n1. Insertar\n2. Mostrar\n3. Borrar\n0. Salir\nSelecciona una opcion: ";
+        final String MENU = "\nMENu COMPETICIONES\n1. Insertar\n2. Mostrar\n3. Borrar\n4. Añadir juego\n0. Salir\nSelecciona una opcion: ";
         int op;
 
         System.out.println("\n".repeat(20));
@@ -218,39 +231,47 @@ public class TestConnector {
                         case "e", "l", "i" -> {
                             System.out.print("Nombre: ");
                             String nom = scan.nextLine();
-                            System.out.print("Nombre del juego: ");
-                            String juego = scan.nextLine();
-                            System.out.print("Nombre del premio: ");
-                            String nomP = scan.nextLine();
-                            System.out.print("Premio en metalico: ");
-                            float p_met = scan.nextFloat();
-                            Competicion c = null;
-                            switch (com) {
-                                case "e" -> {
-                                    c = new Eliminatoria(nom, new Juego(1, juego), new Date(),
-                                            new Premio(nomP, p_met), new ArrayList<Compite_E>());
+                            if (!cDB.findByNom(con, nom)) {
+                                System.out.print("Nombre del juego: ");
+                                String juego = scan.nextLine();
+                                if (jDB.findByNom(con, juego) != null) {
+                                    System.out.print("Nombre del premio: ");
+                                    String nomP = scan.nextLine();
+                                    System.out.print("Premio en metalico: ");
+                                    float p_met = scan.nextFloat();
+                                    Competicion c = null;
+                                    switch (com) {
+                                        case "e" -> {
+                                            c = new Eliminatoria(nom, jDB.findByNom(con, juego), new Date(),
+                                                    new Premio(nomP, p_met), new ArrayList<Compite_E>());
+                                            cDB.inserta(con, c);
+                                            eDB.inserta(con, (Eliminatoria) c);
+                                            c = cDB.findByNom(con, nom, new Eliminatoria());
+                                        }
+                                        case "l" -> {
+                                            c = new Liga(nom, jDB.findByNom(con, juego), new Date(),
+                                                    new Premio(nomP, p_met), new ArrayList<Compite_L>());
+                                            cDB.inserta(con, c);
+                                            lDB.inserta(con, (Liga) c);
+                                            c = cDB.findByNom(con, nom, new Liga());
+                                        }
+                                        case "i" -> {
+                                            c = new Individual(nom, jDB.findByNom(con, juego), new Date(),
+                                                    new Premio(nomP, p_met), new ArrayList<Compite_I>());
+                                            cDB.inserta(con, c);
+                                            iDB.inserta(con, (Individual) c);
+                                            c = cDB.findByNom(con, nom, new Individual());
+                                        }
+                                        default -> {
+                                        }
+                                    }
                                     competiciones.add(c);
-                                    cDB.inserta(con, c);
-                                    eDB.inserta(con, (Eliminatoria) c);
+                                } else {
+                                    System.err.println("Juego no encontrado.");
                                 }
-                                case "l" -> {
-                                    c = new Liga(nom, new Juego(1, juego), new Date(),
-                                            new Premio(nomP, p_met), new ArrayList<Compite_L>());
-                                    competiciones.add(c);
-                                    cDB.inserta(con, c);
-                                    lDB.inserta(con, (Liga) c);
-                                }
-                                case "i" -> {
-                                    c = new Individual(nom, new Juego(1, juego), new Date(),
-                                            new Premio(nomP, p_met), new ArrayList<Compite_I>());
-                                    competiciones.add(c);
-                                    cDB.inserta(con, c);
-                                    iDB.inserta(con, (Individual) c);
-                                }
-                                default -> {
-                                }
+                            } else {
+                                System.err.println("Esa competición ya está registrada.");
                             }
-
                         }
                         default -> System.err.println("Tipo invalido.");
                     }
@@ -266,6 +287,15 @@ public class TestConnector {
                         System.out.println("Eliminado.");
                     } catch (Exception e) {
                         System.out.println("Algo ha salido mal.");
+                    }
+                }
+                case 4 -> {
+                    System.out.print("Nombre del juego: ");
+                    String nom = scan.nextLine();
+                    if (jDB.findByNom(con, nom) == null) {
+                        jDB.inserta(con, new Juego(nom));
+                    } else {
+                        System.err.println("Ese juego ya está registrado.");
                     }
                 }
                 case 0 -> {

@@ -71,12 +71,10 @@ public class Compite_L_DB {
     }
     
     private void obtenCompiteFila(Connection con, ResultSet rs, Compite_L compite_l) throws Exception {
-        Liga liga = new Liga();
         Equipo eq = new Equipo();
-        liga.setNombre(rs.getString("nom_comp"));
         eq.setCod(rs.getInt("id_equipo"));
         compite_l.setCompeticion(
-            (Liga) new Competicion_DB().findByNom(con, liga, new Liga()));
+            (Liga) new Competicion_DB().findByNom(con, rs.getString("nom_comp"), new Liga()));
         compite_l.setEquipo(new Equipo_DB().findById(con, eq));
         compite_l.setfFin(rs.getDate("f_fin"));
         compite_l.setPosicion(rs.getInt("posicion"));
