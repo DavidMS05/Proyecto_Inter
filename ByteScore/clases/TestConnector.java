@@ -22,6 +22,10 @@ import db.Equipo_DB;
 import db.Individual_DB;
 import db.Juego_DB;
 
+/**
+ * @author Denys (3D)
+ * @version 1.1
+ */
 public class TestConnector {
     public static void main(String[] args) throws Exception {
         Conexion_DB _conexion_DB = new Conexion_DB();
