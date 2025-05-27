@@ -68,22 +68,23 @@ public class Competicion_DB {
         }
     }
 
-    private void obtenCompeticionFila(ResultSet rs, Competicion competicion) throws SQLException {
+    private void obtenCompeticionFila(Connection con, ResultSet rs, Competicion competicion) throws Exception {
         competicion.setNombre(rs.getString("nom_comp"));
         competicion.setfRealizacion(rs.getDate("f_realizacion"));
+        competicion.setJuego(new Juego_DB().findByCod(con, rs.getInt("cod_juego")));
         competicion.setPremio(null);
     }
 
-    public Competicion findByNom(Connection con, Competicion competicion, Competicion resultado) throws Exception {
+    public Competicion findByNom(Connection con, String nom, Competicion resultado) throws Exception {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
             stmt = con.prepareStatement("select * from competicion where nom_comp like ?");
-            stmt.setString(1, competicion.getNombre());
+            stmt.setString(1, nom);
 
             rs = stmt.executeQuery();
             while (rs.next()) {
-                obtenCompeticionFila(rs, resultado);
+                obtenCompeticionFila(con, rs, resultado);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -95,6 +96,30 @@ public class Competicion_DB {
                 stmt.close();
         }
         return resultado;
+    }
+
+    public boolean findByNom(Connection con, String nom) throws Exception {
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        boolean existe = false;
+        try {
+            stmt = con.prepareStatement("select * from competicion where nom_comp like ?");
+            stmt.setString(1, nom);
+
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                existe = true;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new Exception("Ha habido un problema al buscar la competicion por nombre: " + ex.getMessage());
+        } finally {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+        return existe;
     }
 
     public byte findTipo(Connection con, String nombre) throws Exception {
@@ -151,7 +176,7 @@ public class Competicion_DB {
             Liga _liga = null;
             while (rs.next()) {
                 _liga = new Liga();
-                obtenCompeticionFila(rs, _liga);
+                obtenCompeticionFila(con, rs, _liga);
                 _listaLigas.add(_liga);
             }
         } catch (SQLException ex) {
@@ -189,7 +214,7 @@ public class Competicion_DB {
                 } else {
                     throw new Exception("Competicion no registrada en ningun tipo");
                 }
-                obtenCompeticionFila(rs, _comp);
+                obtenCompeticionFila(con, rs, _comp);
                 _listaLigas.add(_comp);
             }
         } catch (SQLException ex) {
@@ -216,7 +241,7 @@ public class Competicion_DB {
             Eliminatoria _elim = null;
             while (rs.next()) {
                 _elim = new Eliminatoria();
-                obtenCompeticionFila(rs, _elim);
+                obtenCompeticionFila(con, rs, _elim);
                 _listaEliminatorias.add(_elim);
             }
         } catch (SQLException ex) {
@@ -243,7 +268,7 @@ public class Competicion_DB {
             Individual _indiv = null;
             while (rs.next()) {
                 _indiv = new Individual();
-                obtenCompeticionFila(rs, _indiv);
+                obtenCompeticionFila(con, rs, _indiv);
                 _listaIndividuales.add(_indiv);
             }
         } catch (SQLException ex) {

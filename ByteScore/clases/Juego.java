@@ -19,8 +19,7 @@ public class Juego {
      * Constructor comun.
      * @param nombre nombre del juego
      */
-    public Juego(int cod, String nombre) {
-        this.cod = cod;
+    public Juego(String nombre) {
         this.nombre = nombre;
     }
 

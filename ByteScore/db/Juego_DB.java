@@ -46,9 +46,8 @@ public class Juego_DB {
         try {
             stmt = con.prepareStatement("insert into juego" +
                     "(cod_juego,nom_juego) " +
-                    "values (?,?)");
-            stmt.setInt(1, juego.getCod());
-            stmt.setString(2, juego.getNombre());
+                    "values (null,?)");
+            stmt.setString(1, juego.getNombre());
             
             stmt.executeUpdate();
         } catch (SQLException ex) {
@@ -65,13 +64,38 @@ public class Juego_DB {
         juego.setNombre(rs.getString("nom_juego"));
     }
     
-    public Juego findByCod(Connection con, Juego juego) throws Exception {
+    public Juego findByCod(Connection con, int cod) throws Exception {
         Juego _juego = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
             stmt = con.prepareStatement("select * from juego where cod_juego = ?");
-            stmt.setInt(1, juego.getCod());
+            stmt.setInt(1, cod);
+            
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                _juego = new Juego();
+                obtenJuegoFila(con, rs, _juego);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new Exception("Ha habido un problema al buscar juego por cod: " + ex.getMessage());
+        } finally {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+        return _juego;
+    }
+
+    public Juego findByNom(Connection con, String nom) throws Exception {
+        Juego _juego = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = con.prepareStatement("select * from juego where nom_juego like ?");
+            stmt.setString(1, nom);
             
             rs = stmt.executeQuery();
             while (rs.next()) {
