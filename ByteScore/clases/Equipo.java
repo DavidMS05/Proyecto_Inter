@@ -10,7 +10,7 @@ import java.util.*;
  */
 public class Equipo {
     private String nombre;
-    private ArrayList<String> jugadores;
+    //private ArrayList<String> jugadores;
     private int cod;
 
     /**
@@ -18,7 +18,7 @@ public class Equipo {
      */
     public Equipo() {
         this.nombre = "";
-        this.jugadores = new ArrayList<String>();
+        //this.jugadores = new ArrayList<String>();
     }
     /**
      * Constructor para casos especificos, no se usa de normal.
@@ -26,7 +26,7 @@ public class Equipo {
      */
     public Equipo(String nombre) {
         this.nombre = nombre;
-        this.jugadores = new ArrayList<String>();
+        //this.jugadores = new ArrayList<String>();
     }
     /**
      * Constructor comun.
@@ -35,7 +35,7 @@ public class Equipo {
      */
     public Equipo(String nombre, ArrayList<String> jugadores) {
         this.nombre = nombre;
-        this.jugadores = new ArrayList<>(jugadores);
+        //this.jugadores = new ArrayList<>(jugadores);
     }
 
     public int getCod() {
@@ -58,12 +58,13 @@ public class Equipo {
         this.nombre = nombre;
     }
 
+    
     /**
      * Metodo que devuelve un mensaje con los jugadores del grupo.
      * @return String
      * @see Jugador#toString()
      * @since 1.0
-     */
+     *//*
     public String getPlayers() {
         String resultado = "Los jugadores del equipo " + nombre + " son ";
         for (int i = 0; i < jugadores.size(); i++) {
@@ -74,13 +75,18 @@ public class Equipo {
         }
         resultado += ".";
         return resultado;
-    }
+    }*/
 
     /**
      * Getter de jugadores.
      * @return ArrayList de String
-     */
+     *//*
     public ArrayList<String> getJugadores() {
         return jugadores;
+    }*/
+
+    @Override
+    public String toString() {
+        return String.format("%3i", this.cod) + ": " + this.nombre;
     }
 }

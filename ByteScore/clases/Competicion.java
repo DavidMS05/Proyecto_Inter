@@ -34,16 +34,7 @@ public abstract class Competicion {
         // juego = new Juego();
         // premio = new Premio();
     }
-    /**
-     * Constructor para usos especificos, no se usa normalmente.
-     * @param nombre nombre de la competicion
-     */
-    public Competicion(String nombre) {
-        this.nombre = nombre;
-        // fRealizacion = new Date();
-        // juego = new Juego();
-        // premio = new Premio();
-    }
+    
     /**
      * Constructor 2
      * @param nombre nombre de la competicion

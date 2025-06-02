@@ -19,13 +19,7 @@ public class Liga extends Competicion {
         super();
         equipos = new ArrayList<Compite_L>();
     }
-    /**
-     * Constructor para casos especiales, no se usa de normal.
-     * @param nombre nombre de la competicion
-     */
-    public Liga(String nombre) {
-        super(nombre);
-    }
+    
     /**
      * Constructor comun.
      * @param nombre nombre de la competicion
