@@ -72,6 +72,7 @@ public class Main {
             _con.commit();
         } catch (Exception ex) {
             System.out.println("Exception -> " + ex.getMessage());
+            ex.printStackTrace();
             if (_con != null)
                 _con.rollback();
         } finally {
@@ -155,12 +156,12 @@ public class Main {
                 if (equipos.isEmpty()) {
                     System.out.println("No hay equipos registrados.");
                 } else {
-                    System.out.println(equipos);
+                    // System.out.println(equipos);
                     System.out.println("Selecciona un equipo (1, 2, 3...). Pulse 0 para volver al menu.");
                     for (int i = 0; i < equipos.size(); i++) {
                         System.out.println((i + 1) + ". " + equipos.get(i).getNombre());
                     }
-                    int equipoIndex = scan.nextInt();
+                    int equipoIndex = scan.nextInt()-1;
                     scan.nextLine();
                     System.out.println(equipos.get(equipoIndex));
                     /*

@@ -87,6 +87,6 @@ public class Equipo {
 
     @Override
     public String toString() {
-        return String.format("%3i", this.cod) + ": " + this.nombre;
+        return String.format("%3d", this.cod) + ": " + this.nombre;
     }
 }
