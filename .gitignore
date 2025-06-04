@@ -1,6 +1,5 @@
 *.html
 *.class
 *.bat
-*.csv
-JavaDoc\*
-ByteScore\datos\*
+JavaDoc/*
+ByteScore/datos/*
