@@ -1,6 +1,7 @@
 *.html
 *.class
 *.bat
+*.csv
 .git/
 JavaDoc/*
 ByteScore/datos/*
