@@ -34,10 +34,10 @@ public class Jugador {
      * @param capitan si es capitan
      * @param titular si juega
      */
-    public Jugador(String nombre, String dni, String fechaNacimiento, String email, String password) {//, boolean capitan, boolean titular) {
+    public Jugador(String nombre, String dni, Date fechaNacimiento, String email, String password) {//, boolean capitan, boolean titular) {
         this.nombre = nombre;
         this.dni = dni;
-        //this.fechaNacimiento = fechaNacimiento;
+        this.fechaNacimiento = fechaNacimiento;
         this.email = email;
         this.password = password;
     }
@@ -50,6 +50,7 @@ public class Jugador {
         System.out.println("Jugador: " + nombre + " | DNI: " + dni + " | Nacimiento: " + fechaNacimiento);// +
                 //" | Capitan: " + forma.getCapitan() + " | Titular: " + forma.getTitular());
     }
+
     /**
      * Getter de nombre de jugador.
      * @return nombre
@@ -57,6 +58,7 @@ public class Jugador {
     public String getNombre() {
         return nombre;
     }
+
     /**
      * Getter de dni del jugador.
      * @return dni
@@ -64,17 +66,15 @@ public class Jugador {
     public String getDni() {
         return dni;
     }
+
     /**
      * Getter de fecha de nacimiento.
      * @return fecha
      */
-    /*
-    public String getFechaNacimiento() {
-        return fechaNacimiento;
-    }*/
     public Date getFechaNacimiento() {
         return fechaNacimiento;
     }
+
     /**
      * Getter de contrasenya.
      * @return password
@@ -82,41 +82,57 @@ public class Jugador {
     public String getPassword() {
         return password;
     }
-    /**
-     * Getter de estado del jugador.
-     * @return Forma
-     * @see Forma
-     */
-    /*
-    public Forma getForma() {
-        return forma;
-    }*/
 
+    /**
+     * Getter de email.
+     * @return email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Setter de DNI
+     * @param dni
+     */
     public void setDni(String dni) {
         this.dni = dni;
     }
 
+    /**
+     * Setter de email
+     * @param email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
-/*
-    public void setFechaNacimiento(String fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }*/
 
+    /**
+     * Setter de fecha de nacimiento
+     * @param fechaNacimiento
+     */
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    /**
+     * Setter de nombre
+     * @param nombre
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
+    /**
+     * Setter de contraseña
+     * @param password
+     */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return this.dni + "\nNombre: " + this.nombre + "\nEmail: " + this.email + "\nFecha de nacimiento: " + this.fechaNacimiento;
     }
 }

@@ -3,7 +3,9 @@ package clases;
 import db.Jugador_DB;
 import db.Liga_DB;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -69,7 +71,7 @@ public class Main {
             System.out.println("Gracias por usar nuestros servicios. Buena suerte, jugadores.");
 
             // fin programa
-            _con.commit();
+            // _con.commit(); <- Hay commit en el bucle
         } catch (Exception ex) {
             System.out.println("Exception -> " + ex.getMessage());
             ex.printStackTrace();
@@ -92,7 +94,9 @@ public class Main {
         while (opcion != 0) {
             System.out.println("\nMENu JUGADORES");
             System.out.println("1. Agregar Jugador");
-            System.out.println("2. Mostrar Jugadores");
+            System.out.println("2. Mostrar Jugador");
+            System.out.println("3. Eliminar Jugador");
+            System.out.println("4. Leer Jugadores");
             System.out.println("0. Salir");
             System.out.print("Selecciona una opcion: ");
 
@@ -105,14 +109,14 @@ public class Main {
                     String nombre = scan.nextLine();
                     System.out.print("DNI del jugador: ");
                     String dni = scan.nextLine();
-                    System.out.print("Fecha de nacimiento (DD/MM/AAAA): ");
+                    System.out.print("Fecha de nacimiento (AAAA-MM-DD): ");
                     String fechaNacimiento = scan.nextLine();
                     System.out.print("Email: ");
                     String email = scan.nextLine();
                     System.out.print("Contraseña: ");
                     String password = scan.nextLine();
 
-                    Jugador j = new Jugador(nombre, dni, fechaNacimiento, email, password);
+                    Jugador j = new Jugador(nombre, dni.toLowerCase(), java.sql.Date.valueOf(fechaNacimiento), email, password);
                     jDB.inserta(con, j);
                     jugadores.add(jDB.findByDni(con, j));
                     System.out.println("Jugador agregado correctamente.");
@@ -122,13 +126,51 @@ public class Main {
                     if (jugadores.isEmpty()) {
                         System.out.println("No hay jugadores registrados.");
                     } else {
-                        System.out.println("\nLista de Jugadores:");
-                        for (Jugador ju : jugadores) {
-                            ju.mostrarInfo();
+                        /*
+                         * System.out.println("\nLista de Jugadores:");
+                         * for (Jugador ju : jugadores) {
+                         * ju.mostrarInfo();
+                         * }
+                         */
+
+                        System.out.println("Selecciona un jugador (1, 2, 3...). Pulse 0 para volver al menu.");
+                        for (int i = 0; i < jugadores.size(); i++) {
+                            System.out.println((i + 1) + ". " + jugadores.get(i).getNombre());
+                        }
+                        int jugadorIndex = scan.nextInt() - 1;
+                        // scan.nextLine();
+                        if (jugadorIndex > 0 && jugadorIndex <= jugadores.size()) {
+                            System.out.println(jugadores.get(jugadorIndex));
                         }
                     }
                     break;
 
+                case 3:
+                    if (jugadores.isEmpty()) {
+                        System.out.println("No hay jugadores para eliminar.");
+                    } else {
+                        System.out.println("Selecciona el jugador a eliminar (1, 2, 3...). Pulsa 0 para cancelar.");
+                        for (int i = 0; i < jugadores.size(); i++) {
+                            System.out.println((i + 1) + ". " + jugadores.get(i).getNombre());
+                        }
+                        int jugadorIndex = scan.nextInt();
+                        scan.nextLine();
+                        if (jugadorIndex > 0 && jugadorIndex <= jugadores.size()) {
+                            Jugador jug = jugadores.get(jugadorIndex - 1);
+                            jugadores.remove(jugadorIndex - 1);
+                            jDB.elimina(con, jug);
+                            System.out.println("Perfecto. Jugador eliminado exitosamente.");
+                        }
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Por favor, comprueba que el archivo se encuentra en ByteScore/datos/");
+                    System.out.println("A continuación, inserte el nombre del archivo en formato CSV, incluyendo la extensión:");
+                    String archivo = scan.nextLine();
+                    leerJugadores(con, jugadores, archivo);
+                    break;
+                
                 case 0:
                     break;
 
@@ -161,13 +203,16 @@ public class Main {
                     for (int i = 0; i < equipos.size(); i++) {
                         System.out.println((i + 1) + ". " + equipos.get(i).getNombre());
                     }
-                    int equipoIndex = scan.nextInt()-1;
-                    scan.nextLine();
-                    System.out.println(equipos.get(equipoIndex));
-                    /*
+                    int equipoIndex = scan.nextInt() - 1;
+                    // scan.nextLine();
                     if (equipoIndex > 0 && equipoIndex <= equipos.size()) {
-                        System.out.println(equipos.get(equipoIndex - 1).getPlayers());
-                    }*/
+                        System.out.println(equipos.get(equipoIndex));
+                    }
+                    /*
+                     * if (equipoIndex > 0 && equipoIndex <= equipos.size()) {
+                     * System.out.println(equipos.get(equipoIndex - 1).getPlayers());
+                     * }
+                     */
                 }
             } else if (opcion == 2) {
                 System.out.print("Elige el nombre del nuevo equipo. ");
@@ -666,4 +711,40 @@ public class Main {
         }
     }
 
+    /**
+     * Metodo que lee los datos de jugadores de un archivo <code>csv</code>.
+     * @param jugadores ArrayList de Jugador
+     * @since 1.6
+     * @see Jugador
+     */
+    public static void leerJugadores(Connection con, ArrayList<Jugador> jugadores, String archivo) {
+        // jugadores.clear();
+        File fs = new File("./ByteScore/datos/" + archivo);
+        if (fs.exists()) {
+            int i = 0;
+            try {
+                FileReader fr = new FileReader(fs);
+                BufferedReader br = new BufferedReader(fr);
+                String cadena;
+                Jugador_DB jDB = new Jugador_DB();
+
+                while ((cadena = br.readLine()) != null) {
+                    String strings[] = cadena.split(","), dni = strings[0], email = strings[1], nombre = strings[2], f = strings[3], pwd = strings[4];
+                    Jugador j = new Jugador(nombre, dni.toLowerCase(), java.sql.Date.valueOf(f), email, pwd);
+                    jDB.inserta(con, j);
+                    jugadores.add(jDB.findByDni(con, j));
+                    i++;
+                }
+                if (fr != null)
+                    fr.close();
+            } catch (IOException e) {
+                System.err.println("ERROR");
+                e.printStackTrace();
+            } catch (Exception e) {
+                System.out.println("Ha ocurrido un error y la operación ha sido cancelada. Por favor, comprueba las líneas " + i + " o " + (i+1));
+                System.out.println("Sintaxis necesaria:\ndni,email,nombre,fecha(aaaa-mm-dd),contraseña");
+            }
+        } else
+            System.err.println("Archivo no encontrado.");
+    }
 }
