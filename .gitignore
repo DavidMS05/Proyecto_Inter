@@ -2,5 +2,5 @@
 *.class
 *.bat
 *.csv
-.git/
-ByteScore/datos/*
+JavaDoc\*
+ByteScore\datos\*
