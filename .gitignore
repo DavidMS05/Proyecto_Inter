@@ -3,5 +3,4 @@
 *.bat
 *.csv
 .git/
-JavaDoc/*
 ByteScore/datos/*
