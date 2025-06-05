@@ -121,7 +121,7 @@ public class Equipo_DB {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            stmt = con.prepareStatement("select * from equipo");
+            stmt = con.prepareStatement("select * from equipo order by nombre_e");
 
             rs = stmt.executeQuery();
             Equipo _liga = null;

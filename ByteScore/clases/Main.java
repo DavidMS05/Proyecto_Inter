@@ -21,6 +21,7 @@ import db.Compite_L_DB;
 import db.Conexion_DB;
 import db.Eliminatoria_DB;
 import db.Equipo_DB;
+import db.Forma_DB;
 import db.Individual_DB;
 import db.Juego_DB;
 
@@ -116,7 +117,8 @@ public class Main {
                     System.out.print("Contraseña: ");
                     String password = scan.nextLine();
 
-                    Jugador j = new Jugador(nombre, dni.toLowerCase(), java.sql.Date.valueOf(fechaNacimiento), email, password);
+                    Jugador j = new Jugador(nombre, dni.toLowerCase(), java.sql.Date.valueOf(fechaNacimiento), email,
+                            password);
                     jDB.inserta(con, j);
                     jugadores.add(jDB.findByDni(con, j));
                     System.out.println("Jugador agregado correctamente.");
@@ -166,11 +168,12 @@ public class Main {
 
                 case 4:
                     System.out.println("Por favor, comprueba que el archivo se encuentra en ByteScore/datos/");
-                    System.out.println("A continuación, inserte el nombre del archivo en formato CSV, incluyendo la extensión:");
+                    System.out.println(
+                            "A continuación, inserte el nombre del archivo en formato CSV, incluyendo la extensión:");
                     String archivo = scan.nextLine();
                     leerJugadores(con, jugadores, archivo);
                     break;
-                
+
                 case 0:
                     break;
 
@@ -184,71 +187,116 @@ public class Main {
     public static void equipos(Connection con, Scanner scan) throws Exception {
         Equipo_DB eDB = new Equipo_DB();
         ArrayList<Equipo> equipos = new ArrayList<>(eDB.cargarEquipos(con));
+        final String MENU = "\nMENu EQUIPOS\n1. Consultar equipo\n2. Crear nuevo equipo\n3. Eliminar equipo\n4. Añadir jugadores a un equipo\n0. Salir\nSelecciona una opcion: ";
         int opcion = -1;
 
         System.out.println("\n".repeat(20));
 
         while (opcion != 0) {
-            System.out.print(
-                    "\nMENu EQUIPOS\n1. Consultar equipo\n2. Crear nuevo equipo\n3. Eliminar equipo\n0. Salir\nSelecciona una opcion: ");
+            System.out.print(MENU);
             opcion = scan.nextInt();
             scan.nextLine();
-
-            if (opcion == 1) {
-                if (equipos.isEmpty()) {
-                    System.out.println("No hay equipos registrados.");
-                } else {
-                    // System.out.println(equipos);
-                    System.out.println("Selecciona un equipo (1, 2, 3...). Pulse 0 para volver al menu.");
-                    for (int i = 0; i < equipos.size(); i++) {
-                        System.out.println((i + 1) + ". " + equipos.get(i).getNombre());
+            switch (opcion) {
+                // Consultar equipo
+                case 1 -> {
+                    if (equipos.isEmpty()) {
+                        System.out.println("No hay equipos registrados.");
+                    } else {
+                        // System.out.println(equipos);
+                        System.out.println("Selecciona un equipo (1, 2, 3...). Pulse 0 para volver al menu.");
+                        for (int i = 0; i < equipos.size(); i++) {
+                            System.out.println((i + 1) + ". " + equipos.get(i).getNombre());
+                        }
+                        int equipoIndex = scan.nextInt() - 1;
+                        // scan.nextLine();
+                        if (equipoIndex > 0 && equipoIndex <= equipos.size()) {
+                            System.out.println(equipos.get(equipoIndex));
+                        }
+                        /*
+                         * if (equipoIndex > 0 && equipoIndex <= equipos.size()) {
+                         * System.out.println(equipos.get(equipoIndex - 1).getPlayers());
+                         * }
+                         */
                     }
-                    int equipoIndex = scan.nextInt() - 1;
-                    // scan.nextLine();
-                    if (equipoIndex > 0 && equipoIndex <= equipos.size()) {
-                        System.out.println(equipos.get(equipoIndex));
-                    }
+                }
+                // Crear equipo
+                case 2 -> {
+                    System.out.print("Elige el nombre del nuevo equipo. ");
+                    String nombreEquipo = scan.nextLine();
                     /*
-                     * if (equipoIndex > 0 && equipoIndex <= equipos.size()) {
-                     * System.out.println(equipos.get(equipoIndex - 1).getPlayers());
+                     * ArrayList<String> jugadores = new ArrayList<>();
+                     * for (int i = 1; i <= 5; i++) {
+                     * System.out.print("Dime el nombre del jugador " + i + ". ");
+                     * jugadores.add(scan.nextLine());
                      * }
                      */
-                }
-            } else if (opcion == 2) {
-                System.out.print("Elige el nombre del nuevo equipo. ");
-                String nombreEquipo = scan.nextLine();
-                /*
-                 * ArrayList<String> jugadores = new ArrayList<>();
-                 * for (int i = 1; i <= 5; i++) {
-                 * System.out.print("Dime el nombre del jugador " + i + ". ");
-                 * jugadores.add(scan.nextLine());
-                 * }
-                 */
-                if (eDB.findByNom(con, nombreEquipo) == null) {
-                    Equipo eq = new Equipo(nombreEquipo);
-                    eDB.inserta(con, eq);
-                    equipos.add(eDB.findByNom(con, nombreEquipo));
-                    System.out.println("Perfecto! Equipo creado exitosamente.");
-                } else {
-                    System.err.println("Ese nombre ya está ocupado.");
-                }
-            } else if (opcion == 3) {
-                if (equipos.isEmpty()) {
-                    System.out.println("No hay equipos para eliminar.");
-                } else {
-                    System.out.println("Selecciona el equipo a eliminar (1, 2, 3...). Pulsa 0 para cancelar.");
-                    for (int i = 0; i < equipos.size(); i++) {
-                        System.out.println((i + 1) + ". " + equipos.get(i).getNombre());
-                    }
-                    int equipoIndex = scan.nextInt();
-                    scan.nextLine();
-                    if (equipoIndex > 0 && equipoIndex <= equipos.size()) {
-                        Equipo eq = equipos.get(equipoIndex - 1);
-                        equipos.remove(equipoIndex - 1);
-                        eDB.elimina(con, eq);
-                        System.out.println("Perfecto. Equipo eliminado exitosamente.");
+                    if (eDB.findByNom(con, nombreEquipo) == null) {
+                        Equipo eq = new Equipo(nombreEquipo);
+                        eDB.inserta(con, eq);
+                        equipos.add(eDB.findByNom(con, nombreEquipo));
+                        System.out.println("Perfecto! Equipo creado exitosamente.");
+                    } else {
+                        System.err.println("Ese nombre ya está ocupado.");
                     }
                 }
+                // Eliminar equipo
+                case 3 -> {
+                    if (equipos.isEmpty()) {
+                        System.out.println("No hay equipos para eliminar.");
+                    } else {
+                        System.out.println("Selecciona el equipo a eliminar (1, 2, 3...). Pulsa 0 para cancelar.");
+                        for (int i = 0; i < equipos.size(); i++) {
+                            System.out.println((i + 1) + ". " + equipos.get(i).getNombre());
+                        }
+                        int equipoIndex = scan.nextInt();
+                        scan.nextLine();
+                        if (equipoIndex > 0 && equipoIndex <= equipos.size()) {
+                            Equipo eq = equipos.get(equipoIndex - 1);
+                            equipos.remove(equipoIndex - 1);
+                            eDB.elimina(con, eq);
+                            System.out.println("Perfecto. Equipo eliminado exitosamente.");
+                        }
+                    }
+                }
+                // Añadir jugadores a equipo
+                case 4 -> {
+                    if (equipos.isEmpty()) {
+                        System.out.println("No hay equipos registrados.");
+                    } else {
+                        System.out.println("Selecciona un equipo (1, 2, 3...). Pulse 0 para volver al menu.");
+                        for (int i = 0; i < equipos.size(); i++) {
+                            System.out.println((i + 1) + ". " + equipos.get(i).getNombre());
+                        }
+                        int equipoIndex = scan.nextInt() - 1;
+                        scan.nextLine();
+                        if (equipoIndex > 0 && equipoIndex <= equipos.size()) {
+                            System.out.println("Inserte los DNI de los jugadores a insertar uno a uno, deje el campo en blanco para terminar.");
+                            String dni = scan.nextLine();
+                            Equipo e = equipos.get(equipoIndex);
+                            Jugador_DB jDB = new Jugador_DB();
+                            Forma_DB fDB = new Forma_DB();
+                            while (!dni.equals("")) {
+                                Jugador j = jDB.findByDni(con, new Jugador(dni));
+                                if (!j.equals(null)) {
+                                    System.out.print("¿Es capitan?[si/no]: ");
+                                    boolean capitan = scan.nextLine().equals("si");
+                                    System.out.print("¿Es titular?[si/no]: ");
+                                    boolean titular = scan.nextLine().equals("si");
+                                    fDB.inserta(con, new Forma(e, j, capitan, titular));
+                                    System.out.println("Insertado.");
+                                } else {
+                                    System.out.println("Jugador no encontrado.");
+                                }
+                                dni = scan.nextLine();
+                            }
+                        }
+                    }
+                }
+                // Salir
+                case 0 -> {
+                }
+                // Default
+                default -> System.out.println("Opción inválida.");
             }
         }
 
@@ -713,6 +761,7 @@ public class Main {
 
     /**
      * Metodo que lee los datos de jugadores de un archivo <code>csv</code>.
+     * 
      * @param jugadores ArrayList de Jugador
      * @since 1.6
      * @see Jugador
@@ -729,7 +778,8 @@ public class Main {
                 Jugador_DB jDB = new Jugador_DB();
 
                 while ((cadena = br.readLine()) != null) {
-                    String strings[] = cadena.split(","), dni = strings[0], email = strings[1], nombre = strings[2], f = strings[3], pwd = strings[4];
+                    String strings[] = cadena.split(","), dni = strings[0], email = strings[1], nombre = strings[2],
+                            f = strings[3], pwd = strings[4];
                     Jugador j = new Jugador(nombre, dni.toLowerCase(), java.sql.Date.valueOf(f), email, pwd);
                     jDB.inserta(con, j);
                     jugadores.add(jDB.findByDni(con, j));
@@ -741,7 +791,9 @@ public class Main {
                 System.err.println("ERROR");
                 e.printStackTrace();
             } catch (Exception e) {
-                System.out.println("Ha ocurrido un error y la operación ha sido cancelada. Por favor, comprueba las líneas " + i + " o " + (i+1));
+                System.out.println(
+                        "Ha ocurrido un error y la operación ha sido cancelada. Por favor, comprueba las líneas " + i
+                                + " o " + (i + 1));
                 System.out.println("Sintaxis necesaria:\ndni,email,nombre,fecha(aaaa-mm-dd),contraseña");
             }
         } else

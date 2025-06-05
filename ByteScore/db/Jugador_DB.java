@@ -106,7 +106,7 @@ public class Jugador_DB {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            stmt = con.prepareStatement("select * from jugador");
+            stmt = con.prepareStatement("select * from jugador order by nombre");
 
             rs = stmt.executeQuery();
             Jugador _jugador = null;

@@ -133,6 +133,6 @@ public class Jugador {
 
     @Override
     public String toString() {
-        return this.dni + "\nNombre: " + this.nombre + "\nEmail: " + this.email + "\nFecha de nacimiento: " + this.fechaNacimiento;
+        return this.dni + "\n-Nombre: " + this.nombre + "\n-Email: " + this.email + "\n-Fecha de nacimiento: " + this.fechaNacimiento;
     }
 }
