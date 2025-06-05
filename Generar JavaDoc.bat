@@ -1,1 +1,0 @@
-javadoc -d .\JavaDoc\ .\ByteScore\*.java

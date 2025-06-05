@@ -69,7 +69,7 @@ public class Main {
                 }
                 _con.commit();
             }
-            System.out.println("Gracias por usar nuestros servicios. Buena suerte, jugadores.");
+            System.out.println("Gracias por usar nuestros servicios, todos los cambios han sido guardados con éxito.");
 
             // fin programa
             // _con.commit(); <- Hay commit en el bucle
