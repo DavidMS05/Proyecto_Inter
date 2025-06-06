@@ -97,7 +97,7 @@ public class Main {
             System.out.println("1. Agregar Jugador");
             System.out.println("2. Mostrar Jugador");
             System.out.println("3. Eliminar Jugador");
-            System.out.println("4. Leer Jugadores");
+            System.out.println("4. Cargar fichero Jugadores");
             System.out.println("0. Salir");
             System.out.print("Selecciona una opcion: ");
 
@@ -340,29 +340,29 @@ public class Main {
                                 System.out.print("Nombre del juego: ");
                                 String juego = scan.nextLine();
                                 if (jDB.findByNom(con, juego) != null) {
-                                    System.out.print("Nombre del premio: ");
-                                    String nomP = scan.nextLine();
-                                    System.out.print("Premio en metalico: ");
-                                    float p_met = scan.nextFloat();
+                                    //System.out.print("Nombre del premio: ");
+                                    //String nomP = scan.nextLine();
+                                    //System.out.print("Premio en metalico: ");
+                                    //float p_met = scan.nextFloat();
                                     Competicion c = null;
                                     switch (com) {
                                         case "e" -> {
-                                            c = new Eliminatoria(nom, jDB.findByNom(con, juego), new Date(),
-                                                    new Premio(nomP, p_met), new ArrayList<Compite_E>());
+                                            c = new Eliminatoria(nom, jDB.findByNom(con, juego), new Date());//,
+                                                    //new Premio(nomP, p_met), new ArrayList<Compite_E>());
                                             cDB.inserta(con, c);
                                             eDB.inserta(con, (Eliminatoria) c);
                                             c = cDB.findByNom(con, nom, new Eliminatoria());
                                         }
                                         case "l" -> {
-                                            c = new Liga(nom, jDB.findByNom(con, juego), new Date(),
-                                                    new Premio(nomP, p_met), new ArrayList<Compite_L>());
+                                            c = new Liga(nom, jDB.findByNom(con, juego), new Date());//,
+                                                    //new Premio(nomP, p_met), new ArrayList<Compite_L>());
                                             cDB.inserta(con, c);
                                             lDB.inserta(con, (Liga) c);
                                             c = cDB.findByNom(con, nom, new Liga());
                                         }
                                         case "i" -> {
-                                            c = new Individual(nom, jDB.findByNom(con, juego), new Date(),
-                                                    new Premio(nomP, p_met), new ArrayList<Compite_I>());
+                                            c = new Individual(nom, jDB.findByNom(con, juego), new Date());//,
+                                                    //new Premio(nomP, p_met), new ArrayList<Compite_I>());
                                             cDB.inserta(con, c);
                                             iDB.inserta(con, (Individual) c);
                                             c = cDB.findByNom(con, nom, new Individual());
@@ -371,6 +371,7 @@ public class Main {
                                         }
                                     }
                                     competiciones.add(c);
+                                    System.out.println("Competición creada.");
                                 } else {
                                     System.err.println("Juego no encontrado.");
                                 }
@@ -614,6 +615,8 @@ public class Main {
                             System.out.println("Nombre de la competicion: ");
                             String comp = scan.nextLine();
                             if (buscarPosCompeticion(competiciones, comp) != -1) {
+                                ce.clear();
+                                ce.addAll(eDB.cargarCompite(con));
                                 String ruta = exportarHTML(ce, comp);
                                 if (!ruta.equals(""))
                                     System.out.println("Exportado con éxito a " + ruta);
@@ -627,6 +630,8 @@ public class Main {
                             System.out.println("Nombre de la competicion: ");
                             String comp = scan.nextLine();
                             if (buscarPosCompeticion(competiciones, comp) != -1) {
+                                cl.clear();
+                                cl.addAll(lDB.cargarCompite(con));
                                 exportarHTML(cl, comp);
                                 System.out.println(
                                         "Exportado con exito a /salida/compite_l_" + comp + ".html\"");
@@ -638,6 +643,8 @@ public class Main {
                             System.out.println("Nombre de la competicion: ");
                             String comp = scan.nextLine();
                             if (buscarPosCompeticion(competiciones, comp) != -1) {
+                                ci.clear();
+                                ci.addAll(iDB.cargarCompite(con));
                                 exportarHTML(ci, comp);
                                 System.out.println(
                                         "Exportado con exito a /salida/compite_i_" + comp + ".html\"");

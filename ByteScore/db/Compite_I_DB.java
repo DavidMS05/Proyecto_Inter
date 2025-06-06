@@ -107,7 +107,7 @@ public class Compite_I_DB {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            stmt = con.prepareStatement("select * from compite_i");
+            stmt = con.prepareStatement("select * from compite_i order by ronda desc");
 
             rs = stmt.executeQuery();
             Compite_I _comp = null;
