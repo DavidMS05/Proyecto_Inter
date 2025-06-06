@@ -29,14 +29,16 @@ public class Forma_DB {
         }
     }
     
-    public void elimina(Connection con, Forma forma) throws Exception {
+    public boolean elimina(Connection con, Forma forma) throws Exception {
         PreparedStatement stmt = null;
+        boolean exito = false;
         try {
             stmt = con.prepareStatement("delete from forma where id_equipo = ?, dni like ?");
             stmt.setInt(1, forma.getEquipo().getCod());
             stmt.setString(2, forma.getJugador().getDni());
 
-            stmt.executeUpdate();
+            if (stmt.executeUpdate() > 0)
+                exito = true;
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new Exception("Ha habido un problema al eliminar forma: " + ex.getMessage());
@@ -44,6 +46,7 @@ public class Forma_DB {
             if (stmt != null)
                 stmt.close();
         }
+        return exito;
     }
     
     public void inserta(Connection con, Forma forma) throws Exception {

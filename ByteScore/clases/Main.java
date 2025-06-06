@@ -168,6 +168,7 @@ public class Main {
 
                 case 4:
                     System.out.println("Por favor, comprueba que el archivo se encuentra en ByteScore/datos/");
+                    System.out.println("y tiene el formato 'dni,email,nombre,fecha(aaaa-mm-dd),contraseña'");
                     System.out.println(
                             "A continuación, inserte el nombre del archivo en formato CSV, incluyendo la extensión:");
                     String archivo = scan.nextLine();
@@ -271,24 +272,32 @@ public class Main {
                         scan.nextLine();
                         if (equipoIndex > 0 && equipoIndex <= equipos.size()) {
                             System.out.println("Inserte los DNI de los jugadores a insertar uno a uno, deje el campo en blanco para terminar.");
-                            String dni = scan.nextLine();
+                            String dni = scan.nextLine().toLowerCase();
                             Equipo e = equipos.get(equipoIndex);
                             Jugador_DB jDB = new Jugador_DB();
                             Forma_DB fDB = new Forma_DB();
                             while (!dni.equals("")) {
                                 Jugador j = jDB.findByDni(con, new Jugador(dni));
                                 if (!j.equals(null)) {
-                                    System.out.print("¿Es capitan?[si/no]: ");
-                                    boolean capitan = scan.nextLine().equals("si");
-                                    System.out.print("¿Es titular?[si/no]: ");
-                                    boolean titular = scan.nextLine().equals("si");
-                                    fDB.inserta(con, new Forma(e, j, capitan, titular));
-                                    System.out.println("Insertado.");
-                                } else {
+                                    if (fDB.findByIdDni(con, new Forma(e, j, false, false)) != null) {
+                                        System.out.print("¿Es capitan?[si/no]: ");
+                                        boolean capitan = scan.nextLine().equals("si");
+                                        System.out.print("¿Es titular?[si/no]: ");
+                                        boolean titular = scan.nextLine().equals("si");
+                                        fDB.inserta(con, new Forma(e, j, capitan, titular));
+                                        System.out.println("Insertado.");
+                                    } else
+                                        System.err.println("Jugador ya está en el equipo.");
+                                } else
                                     System.out.println("Jugador no encontrado.");
-                                }
                                 dni = scan.nextLine();
                             }
+                            System.out.print("Insertados con éxito, ¿desea guardar los cambios?[si/no]: ");
+                            if (scan.nextLine().toLowerCase().equals("si")) {
+                                con.commit();
+                                System.out.println("Guardado.");
+                            } else
+                                System.out.println("Los cambios se guardaran al salir del módulo.");
                         }
                     }
                 }
@@ -605,9 +614,11 @@ public class Main {
                             System.out.println("Nombre de la competicion: ");
                             String comp = scan.nextLine();
                             if (buscarPosCompeticion(competiciones, comp) != -1) {
-                                exportarHTML(ce, comp);
-                                System.out.println(
-                                        "Exportado con exito a /salida/compite_e_" + comp + ".html\"");
+                                String ruta = exportarHTML(ce, comp);
+                                if (!ruta.equals(""))
+                                    System.out.println("Exportado con éxito a " + ruta);
+                                else
+                                    System.err.println("Ha habido un problema inesperado.");
                             } else
                                 System.err.println("Competicion no encontrada.");
                         }
@@ -738,10 +749,12 @@ public class Main {
      * @since 1.1
      * @see Compite
      */
-    private static <T extends Compite> void exportarHTML(ArrayList<T> competiciones, String nomCompeticion) {
+    private static <T extends Compite> String exportarHTML(ArrayList<T> competiciones, String nomCompeticion) {
+        String ruta = "";
         try {
-            File fs = new File("./salida/compite_" + competiciones.get(0).letra() +
-                    "_" + nomCompeticion.replaceAll(" ", "-") + ".html");
+            ruta = "./salida/compite_" + competiciones.get(0).letra() +
+                    "_" + nomCompeticion.replaceAll(" ", "-") + ".html";
+            File fs = new File(ruta);
             fs.getParentFile().mkdirs();
             FileWriter fw = new FileWriter(fs);
             String s = competiciones.get(0).htmlHeader(nomCompeticion);
@@ -757,6 +770,7 @@ public class Main {
             System.err.println("ERROR");
             e.printStackTrace();
         }
+        return ruta;
     }
 
     /**
