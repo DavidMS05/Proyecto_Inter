@@ -437,10 +437,10 @@ public class Main {
                         for (int i = 0; i < competiciones.size(); i++) {
                             System.out.println((i + 1) + ". " + competiciones.get(i).getNombre());
                         }
-                        int competicionesIndex = scan.nextInt() - 1;
+                        int competicionesIndex = scan.nextInt();
 
                         if (competicionesIndex > 0 && competicionesIndex <= competiciones.size()) {
-                            System.out.println(competiciones.get(competicionesIndex));
+                            System.out.println(competiciones.get(competicionesIndex-1));
                         }
                     }
                 }
