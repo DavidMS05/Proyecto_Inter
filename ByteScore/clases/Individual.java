@@ -1,6 +1,6 @@
 package clases;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -10,22 +10,16 @@ import java.util.Date;
  * @see Competicion
  */
 public class Individual extends Competicion {
-    private ArrayList<Compite_I> jugadores;
+    //private ArrayList<Compite_I> jugadores;
 
     /**
      * Constructor por defecto.
      */
     public Individual() {
         super();
-        jugadores = new ArrayList<Compite_I>();
+        //jugadores = new ArrayList<Compite_I>();
     }
-    /**
-     * Constructor para casos especificos, no se usa de normal.
-     * @param nombre nombre de la competicion
-     */
-    public Individual(String nombre) {
-        super(nombre);
-    }
+    
     /**
      * Constructor comun.
      * @param nombre nombre de la competicion
@@ -34,27 +28,27 @@ public class Individual extends Competicion {
      * @param premio premio de la competicion
      * @param jugadores jugadores participantes
      */
-    public Individual(String nombre, Juego juego, Date fRealizacion, Premio premio, ArrayList<Compite_I> jugadores) {
-        super(nombre, juego, fRealizacion, premio);
-        this.jugadores = jugadores;
+    public Individual(String nombre, Juego juego, Date fRealizacion) {//, Premio premio, ArrayList<Compite_I> jugadores) {
+        super(nombre, juego, fRealizacion);//, premio);
+        //this.jugadores = jugadores;
     }
 
     /**
      * Getter de jugadores participantes.
      * @return ArrayList de Compite_I
      * @see Compite_I
-     */
+     *//*
     public ArrayList<Compite_I> getJugadores() {
         return jugadores;
-    }
+    }*/
     /**
      * Setter de jugadores participantes
      * @param jugadores nuevos jugadores
      * @see Compite_I
-     */
+     *//*
     public void setJugadores(ArrayList<Compite_I> jugadores) {
         this.jugadores = jugadores;
-    }
+    }*/
 
     /**
      * addEquipo
@@ -65,7 +59,7 @@ public class Individual extends Competicion {
      * @since 1.0
      * @see Jugador
      * @see Compite_I
-     */
+     *//*
     public boolean addJugador(Jugador jugador, int numRonda) {
         boolean aux = true;
         try {
@@ -74,7 +68,7 @@ public class Individual extends Competicion {
             aux = false;
         }
         return aux;
-    }
+    }*/
 
     @Override
     public String getTipo() {

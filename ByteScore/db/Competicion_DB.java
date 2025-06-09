@@ -72,7 +72,7 @@ public class Competicion_DB {
         competicion.setNombre(rs.getString("nom_comp"));
         competicion.setfRealizacion(rs.getDate("f_realizacion"));
         competicion.setJuego(new Juego_DB().findByCod(con, rs.getInt("cod_juego")));
-        competicion.setPremio(null);
+        //competicion.setPremio(null);
     }
 
     public Competicion findByNom(Connection con, String nom, Competicion resultado) throws Exception {

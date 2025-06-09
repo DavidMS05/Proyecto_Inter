@@ -1,6 +1,6 @@
 package clases;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -10,22 +10,16 @@ import java.util.Date;
  * @see Competicion
  */
 public class Eliminatoria extends Competicion {
-    private ArrayList<Compite_E> equipos;
+    //private ArrayList<Compite_E> equipos;
 
     /**
      * Constructor por defecto.
      */
     public Eliminatoria() {
         super();
-        equipos = new ArrayList<Compite_E>();
+        //equipos = new ArrayList<Compite_E>();
     }
-    /**
-     * Constructor para casos especificos, no se usa de normal.
-     * @param nombre Nombre de la competicion
-     */
-    public Eliminatoria(String nombre) {
-        super(nombre);
-    }
+    
     /**
      * Constructor comun.
      * @param nombre nombre de la competicion
@@ -34,27 +28,27 @@ public class Eliminatoria extends Competicion {
      * @param premio premio de la competicion
      * @param equipos equipos participantes
      */
-    public Eliminatoria(String nombre, Juego juego, Date fRealizacion, Premio premio, ArrayList<Compite_E> equipos) {
-        super(nombre, juego, fRealizacion, premio);
-        this.equipos = equipos;
+    public Eliminatoria(String nombre, Juego juego, Date fRealizacion) {//, Premio premio, ArrayList<Compite_E> equipos) {
+        super(nombre, juego, fRealizacion);//, premio);
+        //this.equipos = equipos;
     }
 
     /**
      * Getter de equipos participantes.
      * @return ArrayList de Compite_E
      * @see Compite_E
-     */
+     *//*
     public ArrayList<Compite_E> getEquipos() {
         return equipos;
-    }
+    }*/
     /**
      * Setter de equipos participantes.
      * @param equipos nuevo equipos
      * @see Compite_E
-     */
+     *//*
     public void setEquipos(ArrayList<Compite_E> equipos) {
         this.equipos = equipos;
-    }
+    }*/
 
     /**
      * addEquipo
@@ -65,7 +59,7 @@ public class Eliminatoria extends Competicion {
      * @since 1.0
      * @see Equipo
      * @see Compite_E
-     */
+     *//*
     public boolean addEquipo(Equipo equipo, int numRonda) {
         boolean aux = true;
         try {
@@ -74,7 +68,7 @@ public class Eliminatoria extends Competicion {
             aux = false;
         }
         return aux;
-    }
+    }*/
     @Override
     public String getTipo() {
         return "Eliminatoria";

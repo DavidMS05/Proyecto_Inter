@@ -7,6 +7,8 @@ import clases.Forma;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.ResultSet;
 
 public class Forma_DB {
@@ -29,14 +31,16 @@ public class Forma_DB {
         }
     }
     
-    public void elimina(Connection con, Forma forma) throws Exception {
+    public boolean elimina(Connection con, Forma forma) throws Exception {
         PreparedStatement stmt = null;
+        boolean exito = false;
         try {
-            stmt = con.prepareStatement("delete from forma where id_equipo = ?, dni like ?");
+            stmt = con.prepareStatement("delete from forma where id_equipo = ? and dni like ?");
             stmt.setInt(1, forma.getEquipo().getCod());
             stmt.setString(2, forma.getJugador().getDni());
 
-            stmt.executeUpdate();
+            if (stmt.executeUpdate() > 0)
+                exito = true;
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new Exception("Ha habido un problema al eliminar forma: " + ex.getMessage());
@@ -44,6 +48,7 @@ public class Forma_DB {
             if (stmt != null)
                 stmt.close();
         }
+        return exito;
     }
     
     public void inserta(Connection con, Forma forma) throws Exception {
@@ -102,5 +107,32 @@ public class Forma_DB {
                 stmt.close();
         }
         return _forma;
+    }
+
+    public List<Jugador> findByEquipo(Connection con, Equipo equipo) throws Exception {
+        List<Jugador> _listaJugadores = new ArrayList<Jugador>();
+        Forma _forma = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = con.prepareStatement("select * from forma where id_equipo = ?");
+            stmt.setInt(1, equipo.getCod());
+            
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                _forma = new Forma();
+                obtenFormaFila(con, rs, _forma);
+                _listaJugadores.add(_forma.getJugador());
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new Exception("Ha habido un problema al cargar forma por equipo: " + ex.getMessage());
+        } finally {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+        return _listaJugadores;
     }
 }

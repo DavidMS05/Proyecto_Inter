@@ -1,6 +1,6 @@
 package clases;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -10,22 +10,16 @@ import java.util.Date;
  * @see Liga
  */
 public class Liga extends Competicion {
-    private ArrayList<Compite_L> equipos;
+    //private ArrayList<Compite_L> equipos;
 
     /**
      * Constructor por defecto.
      */
     public Liga() {
         super();
-        equipos = new ArrayList<Compite_L>();
+        //equipos = new ArrayList<Compite_L>();
     }
-    /**
-     * Constructor para casos especiales, no se usa de normal.
-     * @param nombre nombre de la competicion
-     */
-    public Liga(String nombre) {
-        super(nombre);
-    }
+    
     /**
      * Constructor comun.
      * @param nombre nombre de la competicion
@@ -34,27 +28,27 @@ public class Liga extends Competicion {
      * @param premio premio de la competicion
      * @param equipos equipos participantes
      */
-    public Liga(String nombre, Juego juego, Date fRealizacion, Premio premio, ArrayList<Compite_L> equipos) {
-        super(nombre, juego, fRealizacion, premio);
-        this.equipos = equipos;
+    public Liga(String nombre, Juego juego, Date fRealizacion) {//, Premio premio, ArrayList<Compite_L> equipos) {
+        super(nombre, juego, fRealizacion);//, premio);
+        //this.equipos = equipos;
     }
 
     /**
      * Getter de equipos participantes.
      * @return ArrayList de Compite_L
      * @see Compite_L
-     */
+     *//*
     public ArrayList<Compite_L> getEquipos() {
         return equipos;
-    }
+    }*/
     /**
      * Setter de equipos participantes.
      * @param equipos nuevo equipos
      * @see Compite_L
-     */
+     *//*
     public void setEquipos(ArrayList<Compite_L> equipos) {
         this.equipos = equipos;
-    }
+    }*/
 
     /**
      * addEquipo
@@ -66,7 +60,7 @@ public class Liga extends Competicion {
      * @since 1.0
      * @see Equipo
      * @see Compite_L
-     */
+     *//*
     public boolean addEquipo(Equipo equipo, Date fFin, int posicion) {
         boolean aux = true;
         try {
@@ -75,7 +69,7 @@ public class Liga extends Competicion {
             aux = false;
         }
         return aux;
-    }
+    }*/
 
     @Override
     public String getTipo() {

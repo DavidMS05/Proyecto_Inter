@@ -22,7 +22,7 @@ public abstract class Competicion {
     /** Premio de la competicion.
      * @see Premio
      */
-    protected Premio premio;
+    //protected Premio premio;
 
     // Constructores
     /**
@@ -34,39 +34,30 @@ public abstract class Competicion {
         // juego = new Juego();
         // premio = new Premio();
     }
-    /**
-     * Constructor para usos especificos, no se usa normalmente.
-     * @param nombre nombre de la competicion
-     */
-    public Competicion(String nombre) {
-        this.nombre = nombre;
-        // fRealizacion = new Date();
-        // juego = new Juego();
-        // premio = new Premio();
-    }
+    
     /**
      * Constructor 2
      * @param nombre nombre de la competicion
      * @param juego juego de la competicion
-     */
+     *//*
     public Competicion(String nombre, Juego juego) {
         this.nombre = nombre;
         this.juego = juego;
         fRealizacion = new Date();
         // premio = new Premio();
-    }
+    }*/
     /**
      * Constructor 3
      * @param nombre nombre de la competicion
      * @param juego juego de la competicion
      * @param premio premio de la competicion
-     */
+     *//*
     public Competicion(String nombre, Juego juego, Premio premio) {
         this.nombre = nombre;
         this.juego = juego;
         fRealizacion = new Date();
         this.premio = premio;
-    }
+    }*/
     /**
      * Constructor 4
      * @param nombre nombre de la competicion
@@ -85,13 +76,13 @@ public abstract class Competicion {
      * @param juego juego de la competicion
      * @param fRealizacion fecha de la competicion
      * @param premio premio de la competicion
-     */
+     *//*
     public Competicion(String nombre, Juego juego, Date fRealizacion, Premio premio) {
         this.nombre = nombre;
         this.juego = juego;
         this.fRealizacion = fRealizacion;
         this.premio = premio;
-    }
+    }*/
 
     // Getters && Setters
     /**
@@ -142,18 +133,18 @@ public abstract class Competicion {
      * Getter de premio.
      * @return Premio
      * @see Premio
-     */
+     *//*
     public Premio getPremio() {
         return premio;
-    }
+    }*/
     /**
      * Setter de premio.
      * @param premio nuevo premio
      * @see Premio
-     */
+     *//*
     public void setPremio(Premio premio) {
         this.premio = premio;
-    }
+    }*/
 
     public abstract String getTipo();
 
@@ -163,7 +154,7 @@ public abstract class Competicion {
         return "\nCompeticion: " + nombre + 
         "\n - Tipo: " + getTipo() +
         "\n - Fecha: " + fRealizacion + 
-        "\n - Juego: " + juego + 
-        "\n - Premio: " + premio;
+        "\n - Juego: " + juego;// + 
+        //"\n - Premio: " + premio;
     }
 }

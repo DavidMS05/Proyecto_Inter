@@ -111,7 +111,7 @@ public class Compite_L_DB {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            stmt = con.prepareStatement("select * from compite_l");
+            stmt = con.prepareStatement("select * from compite_l order by posicion");
 
             rs = stmt.executeQuery();
             Compite_L _comp = null;

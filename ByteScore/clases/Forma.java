@@ -12,14 +12,19 @@ public class Forma {
     private Equipo equipo;
     private Jugador jugador;
 
-    public Forma() {}
+    public Forma() {
+        equipo = null;
+        jugador = null;
+    }
 
     /**
      * Constructor comun.
      * @param capitan boolean
      * @param titular boolean
      */
-    public Forma(boolean capitan, boolean titular) {
+    public Forma(Equipo equipo, Jugador jugador, boolean capitan, boolean titular) {
+        this.equipo = equipo;
+        this.jugador = jugador;
         this.capitan = capitan;
         this.titular = titular;
     }
