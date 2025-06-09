@@ -6,7 +6,9 @@ import java.util.ArrayList;
  * Una placa con texto que se adjunta a un premio.
  * @author Denys (3D)
  * @version 1.1
+ * @deprecated
  */
+@Deprecated
 public class Placa {
     private int id;
     private String texto;
@@ -95,6 +97,7 @@ public class Placa {
      * @since 1.0
      * @deprecated no tiene uso en un futuro visible
      */
+    @Deprecated
     public boolean addPremio(Premio premio) {
         boolean aux = true;
         try {

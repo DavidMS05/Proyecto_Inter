@@ -9,7 +9,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase que interactúa con la tabla Liga.
+ * @author Denys (3D)
+ * @see clases.Liga
+ */
 public class Liga_DB {
+    /**
+     * Inserta una fila.
+     * @param con conector
+     * @param liga objeto a insertar
+     * @throws Exception error de sql
+     */
     public void inserta(Connection con, Liga liga) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -27,6 +38,12 @@ public class Liga_DB {
         }
     }
 
+    /**
+     * Carga todas las filas.
+     * @param con conector
+     * @return lista de String
+     * @throws Exception error de sql
+     */
     public List<String> cargarNombres(Connection con) throws Exception {
         List<String> nombres = new ArrayList<String>();
         PreparedStatement stmt = null;

@@ -4,7 +4,9 @@ package clases;
  * Un premio para una competion.
  * @author Denys
  * @version 1.1
+ * @deprecated
  */
+@Deprecated
 public class Premio {
     private String nombre_p;
     private float p_metalico; // No he encontrado clase Euros
@@ -19,29 +21,38 @@ public class Premio {
         nombre_p = "";
         p_metalico = 0;
     }
+    
     /**
      * Constructor mini.
      * @param nombre_p nombre de la placa
+     * @deprecated
      */
+    @Deprecated
     public Premio(String nombre_p) {
         this.nombre_p = nombre_p;
         this.p_metalico = 0;
     }
+    
     /**
      * Constructor sin placa.
      * @param nombre_p nombre de la placa
      * @param p_metalico premio en dinero
+     * @deprecated
      */
+    @Deprecated
     public Premio(String nombre_p, float p_metalico) {
         this.nombre_p = nombre_p;
         this.p_metalico = p_metalico;
     }
+    
     /**
      * Constructor con placa.
      * @param nombre_p nombre de la placa
      * @param p_metalico premio en dinero
      * @param placa la placa
+     * @deprecated
      */
+    @Deprecated
     public Premio(String nombre_p, float p_metalico, Placa placa) {
         this.nombre_p = nombre_p;
         this.p_metalico = p_metalico;
@@ -94,10 +105,20 @@ public class Premio {
         this.placa = placa;
     }
 
+    /**
+     * Getter de competición
+     * @return competición
+     * @see Competicion
+     */
     public Competicion getCompeticion() {
         return competicion;
     }
 
+    /**
+     * Setter de competición.
+     * @param competicion nueva competición
+     * @see Competicion
+     */
     public void setCompeticion(Competicion competicion) {
         this.competicion = competicion;
     }

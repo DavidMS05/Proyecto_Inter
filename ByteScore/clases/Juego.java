@@ -1,9 +1,8 @@
 package clases;
 
 /**
- * Clase que representa un juego. No tiene gran funcionalidad.
+ * Clase que representa un juego.
  * @author Denys (3D)
- * @version 1.0
  */
 public class Juego {
     private String nombre;
@@ -14,13 +13,16 @@ public class Juego {
      */
     public Juego() {
         nombre = "";
+        cod = 0;
     }
+
     /**
-     * Constructor comun.
+     * Constructor común.
      * @param nombre nombre del juego
      */
     public Juego(String nombre) {
         this.nombre = nombre;
+        this.cod = 0;
     }
 
     @Override
@@ -28,18 +30,34 @@ public class Juego {
         return this.nombre;
     }
 
+    /**
+     * Getter de código.
+     * @return código
+     */
     public int getCod() {
         return cod;
     }
 
+    /**
+     * Getter de nombre.
+     * @return nombre
+     */
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     * Setter de código.
+     * @param cod nuevo código
+     */
     public void setCod(int cod) {
         this.cod = cod;
     }
 
+    /**
+     * Setter de nombre.
+     * @param nombre nuevo nombre
+     */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }

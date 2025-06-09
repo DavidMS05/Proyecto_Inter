@@ -6,16 +6,19 @@
 
 package db;
 
-/**
- *
- * @author Emiliano
- */
-
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Clase que conecta con la base de datos.
+ * @author Emiliano
+ */
 public class Conexion_DB {
-
+    /**
+     * Abre conexión con la base de datos.
+     * @return conector
+     * @throws Exception error
+     */
     public Connection AbrirConexion() throws Exception {
         Connection con = null; // instacia una conexión
         try {
@@ -29,6 +32,11 @@ public class Conexion_DB {
         }
     }
 
+    /**
+     * Cierra conexión con la base de datos.
+     * @param con conector
+     * @throws Exception error
+     */
     public void CerrarConexion(Connection con) throws Exception {
 
         try {

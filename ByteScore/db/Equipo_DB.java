@@ -9,7 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.ResultSet;
 
+/**
+ * Clase que interactúa con la tabla de Equipo.
+ * @author Denys (3D)
+ * @see clases.Equipo
+ */
 public class Equipo_DB {
+    /**
+     * Actualiza una fila.
+     * @param con conector
+     * @param equipo fila actualizada
+     * @throws Exception error de sql
+     */
     public void actualiza(Connection con, Equipo equipo) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -27,6 +38,12 @@ public class Equipo_DB {
         }
     }
 
+    /**
+     * Elimina una fila.
+     * @param con conector
+     * @param equipo fila a eliminar
+     * @throws Exception error de sql
+     */
     public void elimina(Connection con, Equipo equipo) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -43,6 +60,12 @@ public class Equipo_DB {
         }
     }
 
+    /**
+     * Inserta una fila.
+     * @param con conector
+     * @param equipo fila a insertar
+     * @throws Exception error de sql
+     */
     public void inserta(Connection con, Equipo equipo) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -61,11 +84,25 @@ public class Equipo_DB {
         }
     }
 
+    /**
+     * Carga datos de un ResultSet.
+     * @param rs datos
+     * @param equipo objeto a llenar
+     * @throws SQLException error de sql
+     * @see java.sql.ResultSet
+     */
     private void obtenEquipoFila(ResultSet rs, Equipo equipo) throws SQLException {
         equipo.setCod(rs.getInt("id_equipo"));
         equipo.setNombre(rs.getString("nombre_e"));
     }
 
+    /**
+     * Buscar fila por id de equipo.
+     * @param con conector
+     * @param equipo objeto con el id a buscar
+     * @return objeto encontrado
+     * @throws Exception error de sql
+     */
     public Equipo findById(Connection con, Equipo equipo) throws Exception {
         Equipo _equipo = null;
         PreparedStatement stmt = null;
@@ -91,6 +128,13 @@ public class Equipo_DB {
         return _equipo;
     }
 
+    /**
+     * Buscar fila por nombre de equipo.
+     * @param con conector
+     * @param nom nombre de equipo
+     * @return objeto encontrado
+     * @throws Exception error de sql
+     */
     public Equipo findByNom(Connection con, String nom) throws Exception {
         Equipo _equipo = null;
         PreparedStatement stmt = null;
@@ -116,6 +160,12 @@ public class Equipo_DB {
         return _equipo;
     }
 
+    /**
+     * Carga todas las filas.
+     * @param con conector
+     * @return lista de Equipo
+     * @throws Exception error de sql
+     */
     public List<Equipo> cargarEquipos(Connection con) throws Exception {
         List<Equipo> _listaEquipos = new ArrayList<Equipo>();
         PreparedStatement stmt = null;

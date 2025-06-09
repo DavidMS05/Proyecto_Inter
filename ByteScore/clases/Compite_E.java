@@ -4,12 +4,10 @@ package clases;
  * Resultado de un equipo de una competicion eliminatoria.
  * 
  * @author Denys y Claudia
- * @version 1.1
  */
 public class Compite_E implements Compite {
-    /*
+    /**
      * Equipo participante.
-     * 
      * @see Equipo
      */
     private Equipo equipo;

@@ -7,7 +7,6 @@ import java.util.Date;
  * Resultado de un equipo de una competicion de liga.
  * 
  * @author Denys y Claudia
- * @version 1.1
  */
 public class Compite_L implements Compite {
     private Equipo equipo;

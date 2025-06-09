@@ -9,7 +9,18 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase que interactúa con la tabla Individual.
+ * @author Denys (3D)
+ * @see clases.Individual
+ */
 public class Individual_DB {
+    /**
+     * Inserta una fila.
+     * @param con conector
+     * @param individual objeto a insertar
+     * @throws Exception error de sql
+     */
     public void inserta(Connection con, Individual individual) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -27,6 +38,12 @@ public class Individual_DB {
         }
     }
 
+    /**
+     * Carga todas las filas.
+     * @param con conector
+     * @return lista de String
+     * @throws Exception error de sql
+     */
     public List<String> cargarNombres(Connection con) throws Exception {
         List<String> nombres = new ArrayList<String>();
         PreparedStatement stmt = null;

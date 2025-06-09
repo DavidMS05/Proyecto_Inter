@@ -12,7 +12,20 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 
+/**
+ * Clase que interactúa con la tabla Premio.
+ * @author Denys (3D)
+ * @see clases.Premio
+ * @deprecated
+ */
+@Deprecated
 public class Premio_DB {
+    /**
+     * Actualiza una fila.
+     * @param con conector
+     * @param premio objeto actualizado
+     * @throws Exception error de sql
+     */
     public void actualiza(Connection con, Premio premio) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -32,6 +45,12 @@ public class Premio_DB {
         }
     }
     
+    /**
+     * Elimina una fila.
+     * @param con conector
+     * @param premio objeto a eliminar
+     * @throws Exception error de sql
+     */
     public void elimina(Connection con, Premio premio) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -48,6 +67,12 @@ public class Premio_DB {
         }
     }
     
+    /**
+     * Inserta una fila.
+     * @param con conector
+     * @param premio objeto a insertar
+     * @throws Exception error de sql
+     */
     public void inserta(Connection con, Premio premio) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -69,6 +94,14 @@ public class Premio_DB {
         }
     }
     
+    /**
+     * Carga datos de un ResultSet.
+     * @param con conector para búsquedas internas
+     * @param rs datos
+     * @param premio objeto a llenar
+     * @throws Exception error de sql
+     * @see java.sql.ResultSet
+     */
     private void obtenPlacaFila(Connection con, ResultSet rs, Premio premio) throws Exception {
         Competicion_DB com = new Competicion_DB();
         String nom = rs.getString("nom_comp");
@@ -87,6 +120,13 @@ public class Premio_DB {
         premio.setCompeticion(new Competicion_DB().findByNom(con, rs.getString("nom_comp"), c));
     }
     
+    /**
+     * Busca por nombre.
+     * @param con conector
+     * @param premio objeto con nombre
+     * @return objeto encontrado
+     * @throws Exception error de sql
+     */
     public Premio findByNom(Connection con, Premio premio) throws Exception {
         Premio _placa = null;
         PreparedStatement stmt = null;

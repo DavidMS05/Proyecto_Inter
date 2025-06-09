@@ -7,7 +7,20 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 
+/**
+ * Clase que interactúa con la tabla Placa.
+ * @author Denys (3D)
+ * @see clases.Placa
+ * @deprecated
+ */
+@Deprecated
 public class Placa_DB {
+    /**
+     * Actualiza una fila.
+     * @param con conector
+     * @param placa objeto actualizado
+     * @throws Exception error de sql
+     */
     public void actualiza(Connection con, Placa placa) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -25,6 +38,12 @@ public class Placa_DB {
         }
     }
     
+    /**
+     * Elimina una fila.
+     * @param con conector
+     * @param placa objeto a eliminar
+     * @throws Exception error de sql
+     */
     public void elimina(Connection con, Placa placa) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -41,6 +60,12 @@ public class Placa_DB {
         }
     }
     
+    /**
+     * Inserta una fila.
+     * @param con conector
+     * @param placa objeto a insertar
+     * @throws Exception error de sql
+     */
     public void inserta(Connection con, Placa placa) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -60,11 +85,25 @@ public class Placa_DB {
         }
     }
     
+    /**
+     * Carga datos de un ResultSet.
+     * @param rs datos
+     * @param placa objeto a llenar
+     * @throws SQLException error de sql
+     * @see java.sql.ResultSet
+     */
     private void obtenPlacaFila(ResultSet rs, Placa placa) throws SQLException {
         placa.setId(rs.getInt("id"));
         placa.setTexto(rs.getString("texto"));
     }
     
+    /**
+     * Busca por id.
+     * @param con conector
+     * @param placa objeto con id
+     * @return objeto encontrado
+     * @throws Exception error de sql
+     */
     public Placa findById(Connection con, Placa placa) throws Exception {
         Placa _placa = null;
         PreparedStatement stmt = null;
