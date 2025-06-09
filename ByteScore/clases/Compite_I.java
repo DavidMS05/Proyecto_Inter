@@ -4,7 +4,6 @@ package clases;
  * Resultado de un jugador de una competicion individual.
  * 
  * @author Denys y Claudia
- * @version 1.2
  */
 public class Compite_I implements Compite {
     private Jugador jugador;

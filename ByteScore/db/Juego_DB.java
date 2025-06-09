@@ -9,7 +9,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.ResultSet;
 
+/**
+ * Clase que interactúa con la tabla Juego.
+ * @author Denys (3D)
+ * @see clases.Juego
+ */
 public class Juego_DB {
+    /**
+     * Actualiza una fila.
+     * @param con conector
+     * @param juego objeto actualizado
+     * @throws Exception error de sql
+     */
     public void actualiza(Connection con, Juego juego) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -27,6 +38,12 @@ public class Juego_DB {
         }
     }
     
+    /**
+     * Elimina una fila.
+     * @param con conector
+     * @param juego objeto a eliminar
+     * @throws Exception error de sql
+     */
     public void elimina(Connection con, Juego juego) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -43,6 +60,12 @@ public class Juego_DB {
         }
     }
     
+    /**
+     * Inserta una fila.
+     * @param con conector
+     * @param juego objeto a insertar
+     * @throws Exception error de sql
+     */
     public void inserta(Connection con, Juego juego) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -61,11 +84,25 @@ public class Juego_DB {
         }
     }
     
+    /**
+     * Carga datos de un ResultSet.
+     * @param rs datos
+     * @param juego objeto a llenar
+     * @throws Exception error de sql
+     * @see java.sql.ResultSet
+     */
     private void obtenJuegoFila(ResultSet rs, Juego juego) throws Exception {
         juego.setCod(rs.getInt("cod_juego"));
         juego.setNombre(rs.getString("nom_juego"));
     }
     
+    /**
+     * Buscar fila por código.
+     * @param con conector
+     * @param cod código
+     * @return objeto encontrado
+     * @throws Exception error de sql
+     */
     public Juego findByCod(Connection con, int cod) throws Exception {
         Juego _juego = null;
         PreparedStatement stmt = null;
@@ -91,6 +128,13 @@ public class Juego_DB {
         return _juego;
     }
 
+    /**
+     * Buscar fila por nombre.
+     * @param con conector
+     * @param nom nombre del juego
+     * @return objeto encontrado
+     * @throws Exception error de sql
+     */
     public Juego findByNom(Connection con, String nom) throws Exception {
         Juego _juego = null;
         PreparedStatement stmt = null;
@@ -116,6 +160,12 @@ public class Juego_DB {
         return _juego;
     }
 
+    /**
+     * Cargar todas las filas.
+     * @param con conector
+     * @return lista de juegos
+     * @throws Exception error de sql
+     */
     public List<Juego> cargar(Connection con) throws Exception {
         List<Juego> _listaJuegos = new ArrayList<Juego>();
         PreparedStatement stmt = null;

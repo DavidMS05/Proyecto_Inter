@@ -27,9 +27,14 @@ import db.Juego_DB;
 
 /**
  * @author Denys (3D)
- * @version 1.5
+ * @version 2.0
  */
 public class Main {
+    /**
+     * main
+     * @param args argumentos
+     * @throws Exception error
+     */
     public static void main(String[] args) throws Exception {
         Conexion_DB _conexion_DB = new Conexion_DB();
         Connection _con = null;
@@ -85,6 +90,13 @@ public class Main {
         }
     }
 
+    /**
+     * Subsistema de jugadores.
+     * @param con conector
+     * @param scan escaner
+     * @throws Exception error
+     * @see Jugador
+     */
     public static void jugadores(Connection con, Scanner scan) throws Exception {
         Jugador_DB jDB = new Jugador_DB();
         ArrayList<Jugador> jugadores = new ArrayList<>(jDB.cargarJugadores(con));
@@ -185,6 +197,15 @@ public class Main {
         System.out.println("\n".repeat(20));
     }
 
+    /**
+     * Subsistema de equipos.
+     * @param con conector
+     * @param scan escaner
+     * @throws Exception error
+     * @see Equipo
+     * @see Forma
+     * @see Jugador
+     */
     public static void equipos(Connection con, Scanner scan) throws Exception {
         Equipo_DB eDB = new Equipo_DB();
         Forma_DB fDB = new Forma_DB();
@@ -276,7 +297,9 @@ public class Main {
                             Jugador_DB jDB = new Jugador_DB();
 
                             while (!dni.equals("")) {
-                                Jugador j = jDB.findByDni(con, new Jugador(dni));
+                                Jugador j = new Jugador();
+                                j.setDni(dni);
+                                j = jDB.findByDni(con, j);
                                 if (!j.equals(null)) {
                                     if (fDB.findByIdDni(con, new Forma(e, j, false, false)) != null) {
                                         System.out.print("¿Es capitan?[si/no]: ");
@@ -349,6 +372,14 @@ public class Main {
         System.out.println("\n".repeat(20));
     }
 
+    /**
+     * Subsistema de competiciones.
+     * @param con conector
+     * @param scan escaner
+     * @throws Exception error
+     * @see Competicion
+     * @see Juego
+     */
     public static void competiciones(Connection con, Scanner scan) throws Exception {
         Competicion_DB cDB = new Competicion_DB();
         Eliminatoria_DB eDB = new Eliminatoria_DB();
@@ -529,6 +560,15 @@ public class Main {
         System.out.println("\n".repeat(20));
     }
 
+    /**
+     * Subsistema de resultados.
+     * @param con conector
+     * @param scan escaner
+     * @throws Exception error
+     * @see Compite
+     * @see Equipo
+     * @see Jugador
+     */
     public static void resultados(Connection con, Scanner scan) throws Exception {
         Compite_E_DB eDB = new Compite_E_DB();
         Compite_L_DB lDB = new Compite_L_DB();
@@ -897,7 +937,9 @@ public class Main {
     /**
      * Metodo que lee los datos de jugadores de un archivo <code>csv</code>.
      * 
+     * @param con conector
      * @param jugadores ArrayList de Jugador
+     * @param archivo nombre del archivo
      * @since 1.6
      * @see Jugador
      */

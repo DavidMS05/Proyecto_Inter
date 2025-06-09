@@ -11,7 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.ResultSet;
 
+/**
+ * Clase que interactúa con la tabla Compite_I.
+ * @author Denys (3D)
+ * @see clases.Compite_I
+ */
 public class Compite_I_DB {
+    /**
+     * Actualiza la indormación de una fila.
+     * @param con conector
+     * @param compite_i la fila actualizada
+     * @throws Exception error de sql
+     */
     public void actualiza(Connection con, Compite_I compite_i) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -30,6 +41,12 @@ public class Compite_I_DB {
         }
     }
     
+    /**
+     * Elimina una fila.
+     * @param con conector
+     * @param compite_i la fila a eliminar
+     * @throws Exception error de sql
+     */
     public void elimina(Connection con, Compite_I compite_i) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -47,6 +64,12 @@ public class Compite_I_DB {
         }
     }
     
+    /**
+     * Inserta una fila.
+     * @param con conector
+     * @param compite_i la fila a insertar
+     * @throws Exception error de sql
+     */
     public void inserta(Connection con, Compite_I compite_i) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -67,6 +90,14 @@ public class Compite_I_DB {
         }
     }
     
+    /**
+     * Carga la información de en ResultSet.
+     * @param con conector para búsquedas internas
+     * @param rs datos
+     * @param compite_i objeto cargado
+     * @throws Exception error de sql
+     * @see java.sql.ResultSet
+     */
     private void obtenCompiteFila(Connection con, ResultSet rs, Compite_I compite_i) throws Exception {
         Jugador jug = new Jugador();
         jug.setDni(rs.getString("dni"));
@@ -76,6 +107,16 @@ public class Compite_I_DB {
         compite_i.setNumRonda(rs.getInt("ronda"));
     }
     
+    /**
+     * Busca fila por nombre de competición y DNI de jugador.
+     * @param con conector
+     * @param nom_comp nombre de competición
+     * @param dni dni del jugador
+     * @return objeto encontrado
+     * @throws Exception error de sql
+     * @see clases.Competicion
+     * @see clases.Jugador
+     */
     public Compite_I findByNomDni(Connection con, String nom_comp, int dni) throws Exception {
         Compite_I _compite = null;
         PreparedStatement stmt = null;
@@ -102,6 +143,12 @@ public class Compite_I_DB {
         return _compite;
     }
 
+    /**
+     * Carga todas las filas.
+     * @param con conector
+     * @return lista de Compite_I
+     * @throws Exception error de sql
+     */
     public List<Compite_I> cargarCompite(Connection con) throws Exception {
         List<Compite_I> _listaComp = new ArrayList<Compite_I>();
         PreparedStatement stmt = null;

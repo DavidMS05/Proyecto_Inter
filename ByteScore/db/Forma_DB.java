@@ -11,7 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.sql.ResultSet;
 
+/**
+ * Clase que interactúa con la tabla de Forma.
+ * @author Denys (3D)
+ * @see clases.Forma
+ */
 public class Forma_DB {
+    /**
+     * Actualiza una fila.
+     * @param con conector
+     * @param forma objeto actualizado
+     * @throws Exception error de sql
+     */
     public void actualiza(Connection con, Forma forma) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -31,6 +42,13 @@ public class Forma_DB {
         }
     }
     
+    /**
+     * Elimina una fila.
+     * @param con conector
+     * @param forma objeto a eliminar
+     * @return confirmación de éxito
+     * @throws Exception error de sql
+     */
     public boolean elimina(Connection con, Forma forma) throws Exception {
         PreparedStatement stmt = null;
         boolean exito = false;
@@ -51,6 +69,12 @@ public class Forma_DB {
         return exito;
     }
     
+    /**
+     * Inserta una fila.
+     * @param con conector
+     * @param forma objeto a insertar
+     * @throws Exception error de sql
+     */
     public void inserta(Connection con, Forma forma) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -72,6 +96,14 @@ public class Forma_DB {
         }
     }
     
+    /**
+     * Carga los datos de un ResultSet.
+     * @param con conector para búsquedas internas
+     * @param rs datos
+     * @param forma objeto a llenar
+     * @throws Exception error de sql
+     * @see java.sql.ResultSet
+     */
     private void obtenFormaFila(Connection con, ResultSet rs, Forma forma) throws Exception {
         Equipo eq = new Equipo();
         eq.setCod(rs.getInt("id_equipo"));
@@ -83,6 +115,13 @@ public class Forma_DB {
         forma.setTitular(rs.getBoolean("titular"));
     }
     
+    /**
+     * Buscar fila por id de equipo y DNI de jugador.
+     * @param con conector
+     * @param forma objeto con los datos
+     * @return objeto encontrado
+     * @throws Exception error de sql
+     */
     public Forma findByIdDni(Connection con, Forma forma) throws Exception {
         Forma _forma = null;
         PreparedStatement stmt = null;
@@ -109,6 +148,13 @@ public class Forma_DB {
         return _forma;
     }
 
+    /**
+     * Buscar por equipo.
+     * @param con conector
+     * @param equipo equipo a buscar
+     * @return lista de jugadores
+     * @throws Exception error de sql
+     */
     public List<Jugador> findByEquipo(Connection con, Equipo equipo) throws Exception {
         List<Jugador> _listaJugadores = new ArrayList<Jugador>();
         Forma _forma = null;

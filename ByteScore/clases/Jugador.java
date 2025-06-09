@@ -5,7 +5,6 @@ import java.sql.Date;
 /**
  * Clase que representa un jugador o usuario del sistema.
  * @author David
- * @version 1.1
  */
 public class Jugador {
     private String dni;
@@ -14,27 +13,20 @@ public class Jugador {
     private String email;
     private String password;
     
+    /**
+     * Constructor por defecto.
+     */
     public Jugador() {}
 
     /**
-     * Constructor por defecto.
-     * @param dni dni del jugador
-     */
-    public Jugador(String dni) {
-        this.dni = dni;
-        //this.nombre = this.fechaNacimiento = this.password = "";
-        // this.forma = new Forma(capitan, titular);
-    }
-    /**
-     * Constructor comun.
+     * Constructor común.
      * @param nombre nombre del jugador
      * @param dni dni del jugador
      * @param fechaNacimiento fecha de nacimiento
+     * @param email email del jugador
      * @param password contrasenya
-     * @param capitan si es capitan
-     * @param titular si juega
      */
-    public Jugador(String nombre, String dni, Date fechaNacimiento, String email, String password) {//, boolean capitan, boolean titular) {
+    public Jugador(String nombre, String dni, Date fechaNacimiento, String email, String password) {
         this.nombre = nombre;
         this.dni = dni;
         this.fechaNacimiento = fechaNacimiento;
@@ -44,11 +36,11 @@ public class Jugador {
 
     /**
      * Muestra la informacion relevante del jugador.
-     * @since 1.0
+     * @deprecated
      */
+    @Deprecated
     public void mostrarInfo() {
-        System.out.println("Jugador: " + nombre + " | DNI: " + dni + " | Nacimiento: " + fechaNacimiento);// +
-                //" | Capitan: " + forma.getCapitan() + " | Titular: " + forma.getTitular());
+        System.out.println("Jugador: " + nombre + " | DNI: " + dni + " | Nacimiento: " + fechaNacimiento);
     }
 
     /**
@@ -93,7 +85,7 @@ public class Jugador {
 
     /**
      * Setter de DNI
-     * @param dni
+     * @param dni nuevo DNI
      */
     public void setDni(String dni) {
         this.dni = dni;
@@ -101,7 +93,7 @@ public class Jugador {
 
     /**
      * Setter de email
-     * @param email
+     * @param email nuevo email
      */
     public void setEmail(String email) {
         this.email = email;
@@ -109,7 +101,7 @@ public class Jugador {
 
     /**
      * Setter de fecha de nacimiento
-     * @param fechaNacimiento
+     * @param fechaNacimiento nueva fecha
      */
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
@@ -117,7 +109,7 @@ public class Jugador {
 
     /**
      * Setter de nombre
-     * @param nombre
+     * @param nombre nuevo nombre
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -125,7 +117,7 @@ public class Jugador {
 
     /**
      * Setter de contraseña
-     * @param password
+     * @param password nueva contraseña
      */
     public void setPassword(String password) {
         this.password = password;

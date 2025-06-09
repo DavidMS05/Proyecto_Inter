@@ -1,7 +1,7 @@
 # Proyecto_Inter
 Equipo David , Hector , Denys , Claudia
 
-<img src="./Logo/WhatsApp Image 2025-05-19 at 12.47.28.jpeg" alt="Description" width="500" height="500">
+<img src="./Logo/logo.jpeg" alt="Description" width="500" height="500">
 
 ## 📚 Tabla de Contenidos
 
@@ -57,10 +57,10 @@ Este repositorio contiene tanto **una página web moderna** como un **programa f
 ### 🖥️ Ejecutar el Programa
 
 ```java
-javac -nowarn ./ByteScore/Main.java
-java ByteScore/Main
+javac -cp "ByteScore\lib\mysql-connector-java-8.0.23.jar" -d ByteScore\bin ByteScore\db\*.java ByteScore\clases\*.java
+java -cp "ByteScore\bin;ByteScore\lib\mysql-connector-java-8.0.23.jar" clases.Main
 ```
-o ejecutar *Encender Aplicacion.bat*
+o ejecutar *EncenderAplicacion.bat*
 
 > [!WARNING]  
-> Atención: El código está en desarrollo, puede haber fallos inesperados.
+> Atención: El código está en desarrollo, puede haber fallos inesperados. Si encuentra un fallo, por favor abra un issue.

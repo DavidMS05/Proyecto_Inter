@@ -13,7 +13,17 @@ import java.sql.Date;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Clase que interactúa con las tablas Competicion, Eliminatoria, Liga e Individual.
+ * @author Denys (3D)
+ */
 public class Competicion_DB {
+    /**
+     * Método que actualiza la información de una competición a la de la competición dada.
+     * @param con conector
+     * @param competicion la competición con la información actualizada
+     * @throws Exception error de sql
+     */
     public void actualiza(Connection con, Competicion competicion) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -33,6 +43,12 @@ public class Competicion_DB {
         }
     }
 
+    /**
+     * Método que elimina una competición.
+     * @param con conector
+     * @param competicion la competición a eliminar (con el nombre igual)
+     * @throws Exception error de sql
+     */
     public void elimina(Connection con, Competicion competicion) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -48,6 +64,12 @@ public class Competicion_DB {
         }
     }
 
+    /**
+     * Método que inserta una competición nueva.
+     * @param con conector
+     * @param competicion la competición nueva
+     * @throws Exception error de sql
+     */
     public void inserta(Connection con, Competicion competicion) throws Exception {
         PreparedStatement stmt = null;
         try {
@@ -68,13 +90,28 @@ public class Competicion_DB {
         }
     }
 
+    /**
+     * Método auxiliar para sacar los datos del ResultSet obtenido.
+     * @param con conector, para hacer más busquedas dentro del método
+     * @param rs la información obtenida
+     * @param competicion la competición que se llenará con los datos
+     * @throws Exception error de sql
+     * @see java.sql.ResultSet
+     */
     private void obtenCompeticionFila(Connection con, ResultSet rs, Competicion competicion) throws Exception {
         competicion.setNombre(rs.getString("nom_comp"));
         competicion.setfRealizacion(rs.getDate("f_realizacion"));
         competicion.setJuego(new Juego_DB().findByCod(con, rs.getInt("cod_juego")));
-        //competicion.setPremio(null);
     }
 
+    /**
+     * Método que busca la competición por nombre (clave primaria).
+     * @param con conector
+     * @param nom nombre de la competición
+     * @param resultado competición en la que se guardará el resultado
+     * @return resultado no sé por qué pero lo retorno por si acaso
+     * @throws Exception error de sql
+     */
     public Competicion findByNom(Connection con, String nom, Competicion resultado) throws Exception {
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -98,6 +135,13 @@ public class Competicion_DB {
         return resultado;
     }
 
+    /**
+     * Método que confirma la existencia de una competición por su nombre (clave primaria).
+     * @param con conector
+     * @param nom nombre de la competición
+     * @return booleano si lo ha encontrado
+     * @throws Exception error de sql
+     */
     public boolean findByNom(Connection con, String nom) throws Exception {
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -122,6 +166,17 @@ public class Competicion_DB {
         return existe;
     }
 
+    /**
+     * Devuelve el tipo de competición.
+     * 1 = Eliminatoria
+     * 2 = Liga
+     * 3 = Individual
+     * 0 = No encontrado
+     * @param con conector
+     * @param nombre nombre de la competición
+     * @return byte con el resultado
+     * @throws Exception error de sql
+     */
     public byte findTipo(Connection con, String nombre) throws Exception {
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -166,32 +221,13 @@ public class Competicion_DB {
         return res;
     }
 
-    public List<Liga> cargarLigas(Connection con) throws Exception {
-        List<Liga> _listaLigas = new ArrayList<Liga>();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        try {
-            stmt = con.prepareStatement("select * from competicion where nom_comp like any(select nom_comp from liga)");
-            rs = stmt.executeQuery();
-            Liga _liga = null;
-            while (rs.next()) {
-                _liga = new Liga();
-                obtenCompeticionFila(con, rs, _liga);
-                _listaLigas.add(_liga);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new Exception("Ha habido un problema al cargar ligas: " +
-                    ex.getMessage());
-        } finally {
-            if (rs != null)
-                rs.close();
-            if (stmt != null)
-                stmt.close();
-        }
-        return _listaLigas;
-    }
-
+    /**
+     * Carga la lista de competiciones.
+     * @param con conector
+     * @return lista de Competicion
+     * @throws Exception error de sql
+     * @see clases.Competicion
+     */
     public List<Competicion> cargarTodos(Connection con) throws Exception {
         List<Competicion> _listaLigas = new ArrayList<Competicion>();
         PreparedStatement stmt = null;
@@ -230,57 +266,4 @@ public class Competicion_DB {
         return _listaLigas;
     }
 
-    public List<Eliminatoria> cargarEliminatorias(Connection con) throws Exception {
-        List<Eliminatoria> _listaEliminatorias = new ArrayList<Eliminatoria>();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        try {
-            stmt = con.prepareStatement(
-                    "select * from competicion where nom_comp like any(select nom_comp from eliminatoria)");
-            rs = stmt.executeQuery();
-            Eliminatoria _elim = null;
-            while (rs.next()) {
-                _elim = new Eliminatoria();
-                obtenCompeticionFila(con, rs, _elim);
-                _listaEliminatorias.add(_elim);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new Exception("Ha habido un problema al cargar eliminatorias: " +
-                    ex.getMessage());
-        } finally {
-            if (rs != null)
-                rs.close();
-            if (stmt != null)
-                stmt.close();
-        }
-        return _listaEliminatorias;
-    }
-
-    public List<Individual> cargarIndividuales(Connection con) throws Exception {
-        List<Individual> _listaIndividuales = new ArrayList<Individual>();
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        try {
-            stmt = con.prepareStatement(
-                    "select * from competicion c where c.nom_comp in (select i.nom_comp from individual i)");
-            rs = stmt.executeQuery();
-            Individual _indiv = null;
-            while (rs.next()) {
-                _indiv = new Individual();
-                obtenCompeticionFila(con, rs, _indiv);
-                _listaIndividuales.add(_indiv);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            throw new Exception("Ha habido un problema al cargar individuales: " +
-                    ex.getMessage());
-        } finally {
-            if (rs != null)
-                rs.close();
-            if (stmt != null)
-                stmt.close();
-        }
-        return _listaIndividuales;
-    }
 }
