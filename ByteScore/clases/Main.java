@@ -187,8 +187,10 @@ public class Main {
 
     public static void equipos(Connection con, Scanner scan) throws Exception {
         Equipo_DB eDB = new Equipo_DB();
+        Forma_DB fDB = new Forma_DB();
         ArrayList<Equipo> equipos = new ArrayList<>(eDB.cargarEquipos(con));
-        final String MENU = "\nMENu EQUIPOS\n1. Consultar equipo\n2. Crear nuevo equipo\n3. Eliminar equipo\n4. Añadir jugadores a un equipo\n0. Salir\nSelecciona una opcion: ";
+        final String MENU = "\nMENu EQUIPOS\n1. Consultar equipo\n2. Crear nuevo equipo\n3. Eliminar equipo" +
+                "\n4. Añadir jugadores a un equipo\n5. Eliminar jugadores de un equipo\n0. Salir\nSelecciona una opcion: ";
         int opcion = -1;
 
         System.out.println("\n".repeat(20));
@@ -208,29 +210,23 @@ public class Main {
                         for (int i = 0; i < equipos.size(); i++) {
                             System.out.println((i + 1) + ". " + equipos.get(i).getNombre());
                         }
-                        int equipoIndex = scan.nextInt() - 1;
+                        int equipoIndex = scan.nextInt();
                         // scan.nextLine();
                         if (equipoIndex > 0 && equipoIndex <= equipos.size()) {
-                            System.out.println(equipos.get(equipoIndex));
+                            Equipo eq = equipos.get(equipoIndex - 1);
+                            System.out.println(eq);
+                            ArrayList<Jugador> jugadores = new ArrayList<>(fDB.findByEquipo(con, eq));
+                            for (Jugador j : jugadores) {
+                                System.out.println(j.getDni() + " : " + j.getNombre());
+                            }
                         }
-                        /*
-                         * if (equipoIndex > 0 && equipoIndex <= equipos.size()) {
-                         * System.out.println(equipos.get(equipoIndex - 1).getPlayers());
-                         * }
-                         */
                     }
                 }
+
                 // Crear equipo
                 case 2 -> {
                     System.out.print("Elige el nombre del nuevo equipo. ");
                     String nombreEquipo = scan.nextLine();
-                    /*
-                     * ArrayList<String> jugadores = new ArrayList<>();
-                     * for (int i = 1; i <= 5; i++) {
-                     * System.out.print("Dime el nombre del jugador " + i + ". ");
-                     * jugadores.add(scan.nextLine());
-                     * }
-                     */
                     if (eDB.findByNom(con, nombreEquipo) == null) {
                         Equipo eq = new Equipo(nombreEquipo);
                         eDB.inserta(con, eq);
@@ -240,6 +236,7 @@ public class Main {
                         System.err.println("Ese nombre ya está ocupado.");
                     }
                 }
+
                 // Eliminar equipo
                 case 3 -> {
                     if (equipos.isEmpty()) {
@@ -259,6 +256,7 @@ public class Main {
                         }
                     }
                 }
+
                 // Añadir jugadores a equipo
                 case 4 -> {
                     if (equipos.isEmpty()) {
@@ -271,11 +269,12 @@ public class Main {
                         int equipoIndex = scan.nextInt() - 1;
                         scan.nextLine();
                         if (equipoIndex > 0 && equipoIndex <= equipos.size()) {
-                            System.out.println("Inserte los DNI de los jugadores a insertar uno a uno, deje el campo en blanco para terminar.");
+                            System.out.println(
+                                    "Inserte los DNI de los jugadores a insertar uno a uno, deje el campo en blanco para terminar.");
                             String dni = scan.nextLine().toLowerCase();
                             Equipo e = equipos.get(equipoIndex);
                             Jugador_DB jDB = new Jugador_DB();
-                            Forma_DB fDB = new Forma_DB();
+
                             while (!dni.equals("")) {
                                 Jugador j = jDB.findByDni(con, new Jugador(dni));
                                 if (!j.equals(null)) {
@@ -301,9 +300,47 @@ public class Main {
                         }
                     }
                 }
+
+                // Eliminar jugadores de equipo
+                case 5 -> {
+                    if (equipos.isEmpty()) {
+                        System.out.println("No hay equipos para eliminar.");
+                    } else {
+                        System.out.println("Selecciona un equipo (1, 2, 3...). Pulsa 0 para cancelar.");
+                        for (int i = 0; i < equipos.size(); i++) {
+                            System.out.println((i + 1) + ". " + equipos.get(i).getNombre());
+                        }
+                        int equipoIndex = scan.nextInt();
+                        scan.nextLine();
+                        if (equipoIndex > 0 && equipoIndex <= equipos.size()) {
+                            Equipo eq = equipos.get(equipoIndex - 1);
+                            ArrayList<Jugador> jugadores = new ArrayList<>(fDB.findByEquipo(con, eq));
+
+                            if (jugadores.isEmpty()) {
+                                System.out.println("No hay jugadores para eliminar.");
+                            } else {
+                                System.out.println("Selecciona el jugador (1, 2, 3...). Pulsa 0 para cancelar.");
+                                for (int i = 0; i < jugadores.size(); i++) {
+                                    System.out.println((i + 1) + ". " + jugadores.get(i).getNombre());
+                                }
+                                int jugadorIndex = scan.nextInt();
+                                scan.nextLine();
+                                if (jugadorIndex > 0 && jugadorIndex <= jugadores.size()) {
+                                    Jugador jug = jugadores.get(jugadorIndex - 1);
+                                    fDB.elimina(con, new Forma(eq, jug, false, false));
+                                    System.out.println("Perfecto. Jugador eliminado del equipo exitosamente.");
+                                } else {
+                                    System.out.println("Operación cancelada.");
+                                }
+                            }
+                        }
+                    }
+                }
+
                 // Salir
                 case 0 -> {
                 }
+
                 // Default
                 default -> System.out.println("Opción inválida.");
             }
@@ -319,7 +356,8 @@ public class Main {
         Liga_DB lDB = new Liga_DB();
         Individual_DB iDB = new Individual_DB();
         ArrayList<Competicion> competiciones = new ArrayList<Competicion>(cDB.cargarTodos(con));
-        final String MENU = "\nMENu COMPETICIONES\n1. Insertar\n2. Mostrar\n3. Borrar\n4. Añadir juego\n0. Salir\nSelecciona una opcion: ";
+        ArrayList<Juego> juegos = new ArrayList<>(jDB.cargar(con));
+        final String MENU = "\nMENu COMPETICIONES\n1. Insertar\n2. Mostrar\n3. Borrar\n4. Añadir juego\n5. Eliminar juego\n0. Salir\nSelecciona una opcion: ";
         int op;
 
         System.out.println("\n".repeat(20));
@@ -337,43 +375,50 @@ public class Main {
                             System.out.print("Nombre: ");
                             String nom = scan.nextLine();
                             if (!cDB.findByNom(con, nom)) {
-                                System.out.print("Nombre del juego: ");
-                                String juego = scan.nextLine();
-                                if (jDB.findByNom(con, juego) != null) {
-                                    //System.out.print("Nombre del premio: ");
-                                    //String nomP = scan.nextLine();
-                                    //System.out.print("Premio en metalico: ");
-                                    //float p_met = scan.nextFloat();
-                                    Competicion c = null;
-                                    switch (com) {
-                                        case "e" -> {
-                                            c = new Eliminatoria(nom, jDB.findByNom(con, juego), new Date());//,
-                                                    //new Premio(nomP, p_met), new ArrayList<Compite_E>());
-                                            cDB.inserta(con, c);
-                                            eDB.inserta(con, (Eliminatoria) c);
-                                            c = cDB.findByNom(con, nom, new Eliminatoria());
-                                        }
-                                        case "l" -> {
-                                            c = new Liga(nom, jDB.findByNom(con, juego), new Date());//,
-                                                    //new Premio(nomP, p_met), new ArrayList<Compite_L>());
-                                            cDB.inserta(con, c);
-                                            lDB.inserta(con, (Liga) c);
-                                            c = cDB.findByNom(con, nom, new Liga());
-                                        }
-                                        case "i" -> {
-                                            c = new Individual(nom, jDB.findByNom(con, juego), new Date());//,
-                                                    //new Premio(nomP, p_met), new ArrayList<Compite_I>());
-                                            cDB.inserta(con, c);
-                                            iDB.inserta(con, (Individual) c);
-                                            c = cDB.findByNom(con, nom, new Individual());
-                                        }
-                                        default -> {
-                                        }
-                                    }
-                                    competiciones.add(c);
-                                    System.out.println("Competición creada.");
+                                if (juegos.isEmpty()) {
+                                    System.out.println("No hay juegos para asignar.");
                                 } else {
-                                    System.err.println("Juego no encontrado.");
+                                    System.out.println(
+                                            "Selecciona el juego a asignar (1, 2, 3...). Pulsa 0 para cancelar.");
+                                    for (int i = 0; i < juegos.size(); i++) {
+                                        System.out.println((i + 1) + ". " + juegos.get(i).getNombre());
+                                    }
+                                    int juegosIndex = scan.nextInt();
+                                    scan.nextLine();
+                                    if (juegosIndex > 0 && juegosIndex <= juegos.size()) {
+                                        Juego j = juegos.get(juegosIndex - 1);
+
+                                        Competicion c = null;
+                                        switch (com) {
+                                            case "e" -> {
+                                                c = new Eliminatoria(nom, j, new Date());// ,
+                                                // new Premio(nomP, p_met), new ArrayList<Compite_E>());
+                                                cDB.inserta(con, c);
+                                                eDB.inserta(con, (Eliminatoria) c);
+                                                c = cDB.findByNom(con, nom, new Eliminatoria());
+                                            }
+                                            case "l" -> {
+                                                c = new Liga(nom, j, new Date());// ,
+                                                // new Premio(nomP, p_met), new ArrayList<Compite_L>());
+                                                cDB.inserta(con, c);
+                                                lDB.inserta(con, (Liga) c);
+                                                c = cDB.findByNom(con, nom, new Liga());
+                                            }
+                                            case "i" -> {
+                                                c = new Individual(nom, j, new Date());// ,
+                                                // new Premio(nomP, p_met), new ArrayList<Compite_I>());
+                                                cDB.inserta(con, c);
+                                                iDB.inserta(con, (Individual) c);
+                                                c = cDB.findByNom(con, nom, new Individual());
+                                            }
+                                            default -> {
+                                            }
+                                        }
+                                        competiciones.add(c);
+                                        System.out.println("Competición creada.");
+                                    } else {
+                                        System.out.println("Operación cancelada.");
+                                    }
                                 }
                             } else {
                                 System.err.println("Esa competición ya está registrada.");
@@ -382,17 +427,39 @@ public class Main {
                         default -> System.err.println("Tipo invalido.");
                     }
                 }
-                case 2 -> System.out.println(competiciones);
+                case 2 -> {
+                    // System.out.println(competiciones);
+
+                    if (competiciones.isEmpty()) {
+                        System.out.println("No hay competiciones registradas.");
+                    } else {
+                        System.out.println("Selecciona una competición (1, 2, 3...). Pulse 0 para volver al menu.");
+                        for (int i = 0; i < competiciones.size(); i++) {
+                            System.out.println((i + 1) + ". " + competiciones.get(i).getNombre());
+                        }
+                        int competicionesIndex = scan.nextInt() - 1;
+
+                        if (competicionesIndex > 0 && competicionesIndex <= competiciones.size()) {
+                            System.out.println(competiciones.get(competicionesIndex));
+                        }
+                    }
+                }
                 case 3 -> {
-                    System.out.print("Posicion del arraylist: ");
-                    int pos = scan.nextInt();
-                    try {
-                        Competicion c = competiciones.get(pos);
-                        competiciones.remove(pos);
-                        cDB.elimina(con, c);
-                        System.out.println("Eliminado.");
-                    } catch (Exception e) {
-                        System.out.println("Algo ha salido mal.");
+                    if (competiciones.isEmpty()) {
+                        System.out.println("No hay competiciones para eliminar.");
+                    } else {
+                        System.out.println("Selecciona la competición a eliminar (1, 2, 3...). Pulsa 0 para cancelar.");
+                        for (int i = 0; i < competiciones.size(); i++) {
+                            System.out.println((i + 1) + ". " + competiciones.get(i).getNombre());
+                        }
+                        int competicionesIndex = scan.nextInt();
+                        scan.nextLine();
+                        if (competicionesIndex > 0 && competicionesIndex <= competiciones.size()) {
+                            Competicion comp = competiciones.get(competicionesIndex - 1);
+                            competiciones.remove(competicionesIndex - 1);
+                            cDB.elimina(con, comp);
+                            System.out.println("Perfecto. Competición eliminada exitosamente.");
+                        }
                     }
                 }
                 case 4 -> {
@@ -400,10 +467,57 @@ public class Main {
                     String nom = scan.nextLine();
                     if (jDB.findByNom(con, nom) == null) {
                         jDB.inserta(con, new Juego(nom));
+                        juegos.add(jDB.findByNom(con, nom));
                     } else {
                         System.err.println("Ese juego ya está registrado.");
                     }
                 }
+                case 5 -> {
+                    if (juegos.isEmpty()) {
+                        System.out.println("No hay juegos para eliminar.");
+                    } else {
+                        System.out.println("Selecciona el juego a eliminar (1, 2, 3...). Pulsa 0 para cancelar.");
+                        for (int i = 0; i < juegos.size(); i++) {
+                            System.out.println((i + 1) + ". " + juegos.get(i).getNombre());
+                        }
+                        int juegosIndex = scan.nextInt();
+                        scan.nextLine();
+                        if (juegosIndex > 0 && juegosIndex <= juegos.size()) {
+                            Juego juego = juegos.get(juegosIndex - 1);
+                            juegos.remove(juegosIndex - 1);
+                            jDB.elimina(con, juego);
+                            System.out.println("Perfecto. Juego eliminado exitosamente.");
+                        }
+                    }
+                }
+                /*case 6 -> {
+                    System.out.print("Nombre del premio: ");
+                    String nom = scan.nextLine();
+                    if (jDB.findByNom(con, nom) == null) {
+                        jDB.inserta(con, new Juego(nom));
+                        juegos.add(jDB.findByNom(con, nom));
+                    } else {
+                        System.err.println("Ese juego ya está registrado.");
+                    }
+                }
+                case 7 -> {
+                    if (juegos.isEmpty()) {
+                        System.out.println("No hay juegos para eliminar.");
+                    } else {
+                        System.out.println("Selecciona el juego a eliminar (1, 2, 3...). Pulsa 0 para cancelar.");
+                        for (int i = 0; i < juegos.size(); i++) {
+                            System.out.println((i + 1) + ". " + juegos.get(i).getNombre());
+                        }
+                        int juegosIndex = scan.nextInt();
+                        scan.nextLine();
+                        if (juegosIndex > 0 && juegosIndex <= juegos.size()) {
+                            Juego juego = juegos.get(juegosIndex - 1);
+                            juegos.remove(juegosIndex - 1);
+                            jDB.elimina(con, juego);
+                            System.out.println("Perfecto. Juego eliminado exitosamente.");
+                        }
+                    }
+                }*/
                 case 0 -> {
                 }
                 default -> System.out.println("Opcion invalida.");

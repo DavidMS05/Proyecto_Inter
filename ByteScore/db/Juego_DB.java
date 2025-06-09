@@ -5,6 +5,8 @@ import clases.Juego;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.ResultSet;
 
 public class Juego_DB {
@@ -59,7 +61,7 @@ public class Juego_DB {
         }
     }
     
-    private void obtenJuegoFila(Connection con, ResultSet rs, Juego juego) throws Exception {
+    private void obtenJuegoFila(ResultSet rs, Juego juego) throws Exception {
         juego.setCod(rs.getInt("cod_juego"));
         juego.setNombre(rs.getString("nom_juego"));
     }
@@ -75,7 +77,7 @@ public class Juego_DB {
             rs = stmt.executeQuery();
             while (rs.next()) {
                 _juego = new Juego();
-                obtenJuegoFila(con, rs, _juego);
+                obtenJuegoFila(rs, _juego);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -100,7 +102,7 @@ public class Juego_DB {
             rs = stmt.executeQuery();
             while (rs.next()) {
                 _juego = new Juego();
-                obtenJuegoFila(con, rs, _juego);
+                obtenJuegoFila(rs, _juego);
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -112,5 +114,31 @@ public class Juego_DB {
                 stmt.close();
         }
         return _juego;
+    }
+
+    public List<Juego> cargar(Connection con) throws Exception {
+        List<Juego> _listaJuegos = new ArrayList<Juego>();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            stmt = con.prepareStatement("select * from juego order by nom_juego");
+
+            rs = stmt.executeQuery();
+            Juego _juego = null;
+            while (rs.next()) {
+                _juego = new Juego();
+                obtenJuegoFila(rs, _juego);
+                _listaJuegos.add(_juego);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new Exception("Ha habido un problema al cargar juegos: " + ex.getMessage());
+        } finally {
+            if (rs != null)
+                rs.close();
+            if (stmt != null)
+                stmt.close();
+        }
+        return _listaJuegos;
     }
 }
