@@ -1,7 +1,7 @@
 # Proyecto_Inter
 Equipo David , Hector , Denys , Claudia
 
-<img src="./Logo/Wlogo.jpeg" alt="Description" width="500" height="500">
+<img src="./Logo/logo.jpeg" alt="Description" width="500" height="500">
 
 ## 📚 Tabla de Contenidos
 
