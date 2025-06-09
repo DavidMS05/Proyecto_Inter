@@ -663,7 +663,7 @@ public class Main {
                                         } else
                                             System.err.println("Se ha producido un error inesperado.");
                                     } else
-                                        System.err.println("Posicion invalida.");
+                                        System.err.println("Resultado no encontrado.");
                                 } else
                                     System.err.println("Competicion no encontrada.");
                             } else
