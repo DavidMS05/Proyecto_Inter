@@ -52,8 +52,6 @@ public interface Compite {
     /**
      * Devuelve los datos a escribir a un archivo csv.
      * @return datos en texto y en formato csv
-     * @deprecated
      */
-    @Deprecated
     public String escribirCSV();
 }

@@ -139,6 +139,9 @@ public class Compite_I implements Compite {
 
     @Override
     public String escribirCSV() {
-        return this.getJugador().getNombre() + "," + this.getNumRonda() + "," + this.getCompeticion().getNombre();
+        return String.join(",", 
+            this.getJugador().getDni(), 
+            this.getCompeticion().getNombre(), 
+            Integer.toString(this.getNumRonda()));
     }
 }
