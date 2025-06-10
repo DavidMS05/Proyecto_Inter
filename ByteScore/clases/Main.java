@@ -829,13 +829,71 @@ public class Main {
                         default -> System.err.println("Error, tipo incorrecto.");
                     }
                 }
+                case 4 -> {
+                    System.out.print("¿Los resultados de que tipo de competicion quiere exportar? [e/l/i]: ");
+                    String com = scan.nextLine();
+                    switch (com) {
+                        case "e" -> {
+                            System.out.println("Nombre de la competicion: ");
+                            String comp = scan.nextLine();
+                            if (buscarPosCompeticion(competiciones, comp) != -1) {
+                                ce.clear();
+                                ce.addAll(eDB.cargarCompite(con));
+                                if (ce.isEmpty()) {
+                                    System.err.println("No hay resultados de competiciones eliminatorias.");
+                                } else {
+                                    String ruta = exportarCSV(ce, comp);
+                                    if (!ruta.equals(""))
+                                        System.out.println("Exportado con éxito a " + ruta);
+                                    else
+                                        System.err.println("Ha habido un problema inesperado.");
+                                }
+                            } else
+                                System.err.println("Competicion no encontrada.");
+                        }
+
+                        case "l" -> {
+                            System.out.println("Nombre de la competicion: ");
+                            String comp = scan.nextLine();
+                            if (buscarPosCompeticion(competiciones, comp) != -1) {
+                                cl.clear();
+                                cl.addAll(lDB.cargarCompite(con));
+                                if (cl.isEmpty()) {
+                                    System.err.println("No hay resultados de competiciones de liga.");
+                                } else {
+                                    String ruta = exportarCSV(cl, comp);
+                                    if (!ruta.equals(""))
+                                        System.out.println("Exportado con éxito a " + ruta);
+                                    else
+                                        System.err.println("Ha habido un problema inesperado.");
+                                }
+                            } else
+                                System.err.println("Competicion no encontrada.");
+                        }
+
+                        case "i" -> {
+                            System.out.println("Nombre de la competicion: ");
+                            String comp = scan.nextLine();
+                            if (buscarPosCompeticion(competiciones, comp) != -1) {
+                                ci.clear();
+                                ci.addAll(iDB.cargarCompite(con));
+                                if (ci.isEmpty()) {
+                                    System.err.println("No hay resultados de competiciones individuales.");
+                                } else {
+                                    String ruta = exportarCSV(ci, comp);
+                                    if (!ruta.equals(""))
+                                        System.out.println("Exportado con éxito a " + ruta);
+                                    else
+                                        System.err.println("Ha habido un problema inesperado.");
+                                }
+                            } else
+                                System.err.println("Competicion no encontrada.");
+                        }
+
+                        default -> System.err.println("Error, tipo incorrecto.");
+                    }
+                }
                 case 0 -> {
-                    // if (modE)
-                    // escribirCompite(ce);
-                    // if (modL)
-                    // escribirCompite(cl);
-                    // if (modI)
-                    // escribirCompite(ci);
                 }
                 default -> System.out.println("Opcion invalida.");
             }
