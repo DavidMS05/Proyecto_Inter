@@ -26,12 +26,14 @@ import db.Individual_DB;
 import db.Juego_DB;
 
 /**
+ * Clase principal y ejecutable del programa.
  * @author Denys (3D)
- * @version 2.0
+ * @version 2.1
  */
 public class Main {
     /**
      * main
+     * 
      * @param args argumentos
      * @throws Exception error
      */
@@ -46,7 +48,7 @@ public class Main {
             Scanner scan = new Scanner(System.in);
             // programa
 
-            final String MENU_INICIO = "\nMENu PRINCIPAL\n1. Jugadores\n2. Equipos\n3. Resultados\n4. Competiciones\n0. Salir\nElija un subsistema: ";
+            final String MENU_INICIO = "\nMENu PRINCIPAL\n1. Gestion Jugadores\n2. Gestion Equipos\n3. Gestion Resultados\n4. Gestion Competiciones\n0. Salir\nElija un subsistema: ";
             int op = -1;
 
             System.out.println("\n".repeat(20));
@@ -92,7 +94,8 @@ public class Main {
 
     /**
      * Subsistema de jugadores.
-     * @param con conector
+     * 
+     * @param con  conector
      * @param scan escaner
      * @throws Exception error
      * @see Jugador
@@ -101,17 +104,11 @@ public class Main {
         Jugador_DB jDB = new Jugador_DB();
         ArrayList<Jugador> jugadores = new ArrayList<>(jDB.cargarJugadores(con));
         int opcion = -1;
-
-        System.out.println("\n".repeat(20));
+        final String MENU = "\nMENu JUGADORES\n1. Agregar Jugador\n2. Mostrar Jugador\n3. Eliminar Jugador\n4. Cargar fichero Jugadores\n0. Salir\nSelecciona una opcion: ";
+        System.out.println("\n".repeat(40));
 
         while (opcion != 0) {
-            System.out.println("\nMENu JUGADORES");
-            System.out.println("1. Agregar Jugador");
-            System.out.println("2. Mostrar Jugador");
-            System.out.println("3. Eliminar Jugador");
-            System.out.println("4. Cargar fichero Jugadores");
-            System.out.println("0. Salir");
-            System.out.print("Selecciona una opcion: ");
+            System.out.print(MENU);
 
             opcion = scan.nextInt();
             scan.nextLine();
@@ -194,12 +191,13 @@ public class Main {
                     System.out.println("Opcion no valida. Intenta de nuevo.");
             }
         }
-        System.out.println("\n".repeat(20));
+        System.out.println("\n".repeat(40));
     }
 
     /**
      * Subsistema de equipos.
-     * @param con conector
+     * 
+     * @param con  conector
      * @param scan escaner
      * @throws Exception error
      * @see Equipo
@@ -214,7 +212,7 @@ public class Main {
                 "\n4. Añadir jugadores a un equipo\n5. Eliminar jugadores de un equipo\n0. Salir\nSelecciona una opcion: ";
         int opcion = -1;
 
-        System.out.println("\n".repeat(20));
+        System.out.println("\n".repeat(40));
 
         while (opcion != 0) {
             System.out.print(MENU);
@@ -287,13 +285,13 @@ public class Main {
                         for (int i = 0; i < equipos.size(); i++) {
                             System.out.println((i + 1) + ". " + equipos.get(i).getNombre());
                         }
-                        int equipoIndex = scan.nextInt() - 1;
+                        int equipoIndex = scan.nextInt();
                         scan.nextLine();
                         if (equipoIndex > 0 && equipoIndex <= equipos.size()) {
                             System.out.println(
                                     "Inserte los DNI de los jugadores a insertar uno a uno, deje el campo en blanco para terminar.");
                             String dni = scan.nextLine().toLowerCase();
-                            Equipo e = equipos.get(equipoIndex);
+                            Equipo e = equipos.get(equipoIndex - 1);
                             Jugador_DB jDB = new Jugador_DB();
 
                             while (!dni.equals("")) {
@@ -369,12 +367,13 @@ public class Main {
             }
         }
 
-        System.out.println("\n".repeat(20));
+        System.out.println("\n".repeat(40));
     }
 
     /**
      * Subsistema de competiciones.
-     * @param con conector
+     * 
+     * @param con  conector
      * @param scan escaner
      * @throws Exception error
      * @see Competicion
@@ -391,7 +390,7 @@ public class Main {
         final String MENU = "\nMENu COMPETICIONES\n1. Insertar\n2. Mostrar\n3. Borrar\n4. Añadir juego\n5. Eliminar juego\n0. Salir\nSelecciona una opcion: ";
         int op;
 
-        System.out.println("\n".repeat(20));
+        System.out.println("\n".repeat(40));
 
         System.out.print(MENU);
         op = scan.nextInt();
@@ -471,7 +470,7 @@ public class Main {
                         int competicionesIndex = scan.nextInt();
 
                         if (competicionesIndex > 0 && competicionesIndex <= competiciones.size()) {
-                            System.out.println(competiciones.get(competicionesIndex-1));
+                            System.out.println(competiciones.get(competicionesIndex - 1));
                         }
                     }
                 }
@@ -521,34 +520,38 @@ public class Main {
                         }
                     }
                 }
-                /*case 6 -> {
-                    System.out.print("Nombre del premio: ");
-                    String nom = scan.nextLine();
-                    if (jDB.findByNom(con, nom) == null) {
-                        jDB.inserta(con, new Juego(nom));
-                        juegos.add(jDB.findByNom(con, nom));
-                    } else {
-                        System.err.println("Ese juego ya está registrado.");
-                    }
-                }
-                case 7 -> {
-                    if (juegos.isEmpty()) {
-                        System.out.println("No hay juegos para eliminar.");
-                    } else {
-                        System.out.println("Selecciona el juego a eliminar (1, 2, 3...). Pulsa 0 para cancelar.");
-                        for (int i = 0; i < juegos.size(); i++) {
-                            System.out.println((i + 1) + ". " + juegos.get(i).getNombre());
-                        }
-                        int juegosIndex = scan.nextInt();
-                        scan.nextLine();
-                        if (juegosIndex > 0 && juegosIndex <= juegos.size()) {
-                            Juego juego = juegos.get(juegosIndex - 1);
-                            juegos.remove(juegosIndex - 1);
-                            jDB.elimina(con, juego);
-                            System.out.println("Perfecto. Juego eliminado exitosamente.");
-                        }
-                    }
-                }*/
+                /*
+                 * case 6 -> {
+                 * System.out.print("Nombre del premio: ");
+                 * String nom = scan.nextLine();
+                 * if (jDB.findByNom(con, nom) == null) {
+                 * jDB.inserta(con, new Juego(nom));
+                 * juegos.add(jDB.findByNom(con, nom));
+                 * } else {
+                 * System.err.println("Ese juego ya está registrado.");
+                 * }
+                 * }
+                 * case 7 -> {
+                 * if (juegos.isEmpty()) {
+                 * System.out.println("No hay juegos para eliminar.");
+                 * } else {
+                 * System.out.
+                 * println("Selecciona el juego a eliminar (1, 2, 3...). Pulsa 0 para cancelar."
+                 * );
+                 * for (int i = 0; i < juegos.size(); i++) {
+                 * System.out.println((i + 1) + ". " + juegos.get(i).getNombre());
+                 * }
+                 * int juegosIndex = scan.nextInt();
+                 * scan.nextLine();
+                 * if (juegosIndex > 0 && juegosIndex <= juegos.size()) {
+                 * Juego juego = juegos.get(juegosIndex - 1);
+                 * juegos.remove(juegosIndex - 1);
+                 * jDB.elimina(con, juego);
+                 * System.out.println("Perfecto. Juego eliminado exitosamente.");
+                 * }
+                 * }
+                 * }
+                 */
                 case 0 -> {
                 }
                 default -> System.out.println("Opcion invalida.");
@@ -557,12 +560,13 @@ public class Main {
             op = scan.nextInt();
             scan.nextLine();
         }
-        System.out.println("\n".repeat(20));
+        System.out.println("\n".repeat(40));
     }
 
     /**
      * Subsistema de resultados.
-     * @param con conector
+     * 
+     * @param con  conector
      * @param scan escaner
      * @throws Exception error
      * @see Compite
@@ -573,7 +577,7 @@ public class Main {
         Compite_E_DB eDB = new Compite_E_DB();
         Compite_L_DB lDB = new Compite_L_DB();
         Compite_I_DB iDB = new Compite_I_DB();
-        final String MENU = "MENu RESULTADOS\n1. Registrar resultado\n2. Borrar resultado\n3. Exportar a HTML\n0. Salir\nSelecciona una opcion: ";
+        final String MENU = "MENu RESULTADOS\n1. Registrar resultado\n2. Borrar resultado\n3. Exportar a HTML\n4. Exportar a CSV\n0. Salir\nSelecciona una opcion: ";
         ArrayList<Compite_E> ce = new ArrayList<Compite_E>(eDB.cargarCompite(con));
         ArrayList<Compite_L> cl = new ArrayList<Compite_L>(lDB.cargarCompite(con));
         ArrayList<Compite_I> ci = new ArrayList<Compite_I>(iDB.cargarCompite(con));
@@ -582,7 +586,7 @@ public class Main {
         ArrayList<Competicion> competiciones = new ArrayList<Competicion>(new Competicion_DB().cargarTodos(con));
         int op = -1;
 
-        System.out.println("\n".repeat(20));
+        System.out.println("\n".repeat(40));
 
         while (op != 0) {
             System.out.print(MENU);
@@ -771,11 +775,15 @@ public class Main {
                             if (buscarPosCompeticion(competiciones, comp) != -1) {
                                 ce.clear();
                                 ce.addAll(eDB.cargarCompite(con));
-                                String ruta = exportarHTML(ce, comp);
-                                if (!ruta.equals(""))
-                                    System.out.println("Exportado con éxito a " + ruta);
-                                else
-                                    System.err.println("Ha habido un problema inesperado.");
+                                if (ce.isEmpty()) {
+                                    System.err.println("No hay resultados de competiciones eliminatorias.");
+                                } else {
+                                    String ruta = exportarHTML(ce, comp);
+                                    if (!ruta.equals(""))
+                                        System.out.println("Exportado con éxito a " + ruta);
+                                    else
+                                        System.err.println("Ha habido un problema inesperado.");
+                                }
                             } else
                                 System.err.println("Competicion no encontrada.");
                         }
@@ -786,9 +794,15 @@ public class Main {
                             if (buscarPosCompeticion(competiciones, comp) != -1) {
                                 cl.clear();
                                 cl.addAll(lDB.cargarCompite(con));
-                                exportarHTML(cl, comp);
-                                System.out.println(
-                                        "Exportado con exito a /salida/compite_l_" + comp + ".html\"");
+                                if (cl.isEmpty()) {
+                                    System.err.println("No hay resultados de competiciones de liga.");
+                                } else {
+                                    String ruta = exportarHTML(cl, comp);
+                                    if (!ruta.equals(""))
+                                        System.out.println("Exportado con éxito a " + ruta);
+                                    else
+                                        System.err.println("Ha habido un problema inesperado.");
+                                }
                             } else
                                 System.err.println("Competicion no encontrada.");
                         }
@@ -799,9 +813,79 @@ public class Main {
                             if (buscarPosCompeticion(competiciones, comp) != -1) {
                                 ci.clear();
                                 ci.addAll(iDB.cargarCompite(con));
-                                exportarHTML(ci, comp);
-                                System.out.println(
-                                        "Exportado con exito a /salida/compite_i_" + comp + ".html\"");
+                                if (ci.isEmpty()) {
+                                    System.err.println("No hay resultados de competiciones individuales.");
+                                } else {
+                                    String ruta = exportarHTML(ci, comp);
+                                    if (!ruta.equals(""))
+                                        System.out.println("Exportado con éxito a " + ruta);
+                                    else
+                                        System.err.println("Ha habido un problema inesperado.");
+                                }
+                            } else
+                                System.err.println("Competicion no encontrada.");
+                        }
+
+                        default -> System.err.println("Error, tipo incorrecto.");
+                    }
+                }
+                case 4 -> {
+                    System.out.print("¿Los resultados de que tipo de competicion quiere exportar? [e/l/i]: ");
+                    String com = scan.nextLine();
+                    switch (com) {
+                        case "e" -> {
+                            System.out.println("Nombre de la competicion: ");
+                            String comp = scan.nextLine();
+                            if (buscarPosCompeticion(competiciones, comp) != -1) {
+                                ce.clear();
+                                ce.addAll(eDB.cargarCompite(con));
+                                if (ce.isEmpty()) {
+                                    System.err.println("No hay resultados de competiciones eliminatorias.");
+                                } else {
+                                    String ruta = exportarCSV(ce, comp);
+                                    if (!ruta.equals(""))
+                                        System.out.println("Exportado con éxito a " + ruta);
+                                    else
+                                        System.err.println("Ha habido un problema inesperado.");
+                                }
+                            } else
+                                System.err.println("Competicion no encontrada.");
+                        }
+
+                        case "l" -> {
+                            System.out.println("Nombre de la competicion: ");
+                            String comp = scan.nextLine();
+                            if (buscarPosCompeticion(competiciones, comp) != -1) {
+                                cl.clear();
+                                cl.addAll(lDB.cargarCompite(con));
+                                if (cl.isEmpty()) {
+                                    System.err.println("No hay resultados de competiciones de liga.");
+                                } else {
+                                    String ruta = exportarCSV(cl, comp);
+                                    if (!ruta.equals(""))
+                                        System.out.println("Exportado con éxito a " + ruta);
+                                    else
+                                        System.err.println("Ha habido un problema inesperado.");
+                                }
+                            } else
+                                System.err.println("Competicion no encontrada.");
+                        }
+
+                        case "i" -> {
+                            System.out.println("Nombre de la competicion: ");
+                            String comp = scan.nextLine();
+                            if (buscarPosCompeticion(competiciones, comp) != -1) {
+                                ci.clear();
+                                ci.addAll(iDB.cargarCompite(con));
+                                if (ci.isEmpty()) {
+                                    System.err.println("No hay resultados de competiciones individuales.");
+                                } else {
+                                    String ruta = exportarCSV(ci, comp);
+                                    if (!ruta.equals(""))
+                                        System.out.println("Exportado con éxito a " + ruta);
+                                    else
+                                        System.err.println("Ha habido un problema inesperado.");
+                                }
                             } else
                                 System.err.println("Competicion no encontrada.");
                         }
@@ -810,17 +894,11 @@ public class Main {
                     }
                 }
                 case 0 -> {
-                    // if (modE)
-                    // escribirCompite(ce);
-                    // if (modL)
-                    // escribirCompite(cl);
-                    // if (modI)
-                    // escribirCompite(ci);
                 }
                 default -> System.out.println("Opcion invalida.");
             }
         }
-        System.out.println("\n".repeat(20));
+        System.out.println("\n".repeat(40));
     }
 
     /**
@@ -922,7 +1000,7 @@ public class Main {
             for (T c : competiciones)
                 if (nomCompeticion.equals(c.getCompeticion().getNombre()))
                     s += c.htmlContent();
-            s += "</table></body></html>";
+            s += "</table><p>Fecha de generación del listado: " + new Date().toString() + "</p></body></html>";
             fw.write(s, 0, s.length());
             fw.write("\r\n");
             if (fw != null)
@@ -935,11 +1013,41 @@ public class Main {
     }
 
     /**
+     * Metodo universal que exporta los resultados de una competicion cualquiera a
+     * un archivo csv.
+     * 
+     * @param competiciones  ArrayList de <b>clase que implementa Compite</b>
+     * @param nomCompeticion nombre de la competicion
+     * @see Compite
+     */
+    private static <T extends Compite> String exportarCSV(ArrayList<T> competiciones, String nomCompeticion) {
+        String ruta = "";
+        try {
+            ruta = "./salida/compite_" + competiciones.get(0).letra() +
+                    "_" + nomCompeticion.replaceAll(" ", "-") + ".csv";
+            File fs = new File(ruta);
+            fs.getParentFile().mkdirs();
+            FileWriter fw = new FileWriter(fs);
+            String s = "";
+            for (T c : competiciones)
+                if (nomCompeticion.equals(c.getCompeticion().getNombre()))
+                    s += c.escribirCSV() + "\r\n";
+            fw.write(s, 0, s.length());
+            if (fw != null)
+                fw.close();
+        } catch (IOException e) {
+            System.err.println("ERROR");
+            e.printStackTrace();
+        }
+        return ruta;
+    }
+
+    /**
      * Metodo que lee los datos de jugadores de un archivo <code>csv</code>.
      * 
-     * @param con conector
+     * @param con       conector
      * @param jugadores ArrayList de Jugador
-     * @param archivo nombre del archivo
+     * @param archivo   nombre del archivo
      * @since 1.6
      * @see Jugador
      */
@@ -964,6 +1072,7 @@ public class Main {
                 }
                 if (fr != null)
                     fr.close();
+                System.out.println("Juagdores importados. Salga del módulo para guardar los cambios.");
             } catch (IOException e) {
                 System.err.println("ERROR");
                 e.printStackTrace();

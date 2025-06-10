@@ -1,6 +1,5 @@
 package clases;
 
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -162,9 +161,10 @@ public class Compite_L implements Compite {
 
     @Override
     public String escribirCSV() {
-        Calendar ca = Calendar.getInstance();
-        ca.setTime(this.getfFin());
-        return this.getEquipo().getNombre() + "," + (ca.get(Calendar.DAY_OF_MONTH) + "/" + ca.get(Calendar.MONTH) + "/" +
-                ca.get(Calendar.YEAR)) + "," + this.getPosicion() + "," + this.getCompeticion().getNombre();
+        return String.join(",", 
+            Integer.toString(this.getEquipo().getCod()), 
+            this.getCompeticion().getNombre(), 
+            Integer.toString(this.getPosicion()), 
+            Long.toString(this.fFin.getTime()));
     }
 }
