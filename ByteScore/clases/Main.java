@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import db.Competicion_DB;
@@ -27,6 +28,7 @@ import db.Juego_DB;
 
 /**
  * Clase principal y ejecutable del programa.
+ * 
  * @author Denys (3D)
  * @version 2.1
  */
@@ -55,8 +57,7 @@ public class Main {
 
             while (op != 0) {
                 System.out.print(MENU_INICIO);
-                op = scan.nextInt();
-                scan.nextLine();
+                op = leerOpcion(scan);
 
                 switch (op) {
                     case 0 -> scan.close();
@@ -110,8 +111,7 @@ public class Main {
         while (opcion != 0) {
             System.out.print(MENU);
 
-            opcion = scan.nextInt();
-            scan.nextLine();
+            opcion = leerOpcion(scan);
 
             switch (opcion) {
                 case 1:
@@ -216,8 +216,9 @@ public class Main {
 
         while (opcion != 0) {
             System.out.print(MENU);
-            opcion = scan.nextInt();
-            scan.nextLine();
+
+            opcion = leerOpcion(scan);
+
             switch (opcion) {
                 // Consultar equipo
                 case 1 -> {
@@ -298,8 +299,8 @@ public class Main {
                                 Jugador j = new Jugador();
                                 j.setDni(dni);
                                 j = jDB.findByDni(con, j);
-                                if (!j.equals(null)) {
-                                    if (fDB.findByIdDni(con, new Forma(e, j, false, false)) != null) {
+                                if (j != null) {
+                                    if (fDB.findByIdDni(con, new Forma(e, j, false, false)) == null) {
                                         System.out.print("¿Es capitan?[si/no]: ");
                                         boolean capitan = scan.nextLine().equals("si");
                                         System.out.print("¿Es titular?[si/no]: ");
@@ -393,8 +394,9 @@ public class Main {
         System.out.println("\n".repeat(40));
 
         System.out.print(MENU);
-        op = scan.nextInt();
-        scan.nextLine();
+        
+        op = leerOpcion(scan);
+
         while (op != 0) {
             switch (op) {
                 case 1 -> {
@@ -557,8 +559,8 @@ public class Main {
                 default -> System.out.println("Opcion invalida.");
             }
             System.out.print(MENU);
-            op = scan.nextInt();
-            scan.nextLine();
+            
+            op = leerOpcion(scan);
         }
         System.out.println("\n".repeat(40));
     }
@@ -590,8 +592,9 @@ public class Main {
 
         while (op != 0) {
             System.out.print(MENU);
-            op = scan.nextInt();
-            scan.nextLine();
+            
+            op = leerOpcion(scan);
+
             switch (op) {
                 case 1 -> {
                     System.out.print("¿Para que competicion quiere registrar el resultado? [e/l/i]: ");
@@ -1084,5 +1087,21 @@ public class Main {
             }
         } else
             System.err.println("Archivo no encontrado.");
+    }
+
+    /**
+     * Lee un número entero, y devuelve -1 si ha leído algo raro.
+     * @param scan
+     * @return -1 o el número leído
+     */
+    public static int leerOpcion(Scanner scan) {
+        int op = -1;
+        try {
+            op = scan.nextInt();
+        } catch (InputMismatchException e) {
+            System.err.println("Eso no es un número.");
+        }
+        scan.nextLine();
+        return op;
     }
 }
